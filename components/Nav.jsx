@@ -56,6 +56,7 @@ export default function Nav({
 
   return (
     <header className={`nav${scrolled ? " is-scrolled" : ""}${open ? " is-open" : ""}`}>
+
       <div className="container nav-row">
         <Link className="nav-logo" href={logoHref} aria-label="Sasurie Group of Institutions, home">
           <Image src="/brand/group-clear.png" alt="Sasurie Group of Institutions" width={1100} height={241} priority />

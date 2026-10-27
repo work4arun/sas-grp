@@ -6,9 +6,9 @@ import { LAYERS } from "@/lib/layers";
 import { SITE } from "@/lib/site";
 
 export const metadata = {
-  title: "Happenings at SAS | Sasurie College of Engineering",
+  title: "Happenings at SAS | Sasurie Group of Institutions",
   description:
-    "What is happening at Sasurie College of Engineering: festivals and sport, workshops and research, industry and entrepreneurship, and milestones such as autonomous status in January 2026.",
+    "What is happening across Sasurie Group of Institutions: festivals, sport, national symposiums, hackathons, industry research, and milestones across our campuses.",
   alternates: { canonical: "/happenings" },
 };
 
@@ -26,7 +26,7 @@ export default function HappeningsPage() {
             <Words
               className="lede"
               delay={0.2}
-              text="Festivals and sport, workshops and research, industry and enterprise, and the milestones that move the college forward. Scroll, and watch the Sasurie arrow climb with them."
+              text="Festivals and sport, workshops and research, industry and enterprise, and the milestones that move our institutions forward. Scroll, and watch the Sasurie arrow climb with them."
             />
           </div>
           <ul className="hp-legend" aria-label="The four layers the happenings are grouped under">
@@ -52,7 +52,7 @@ export default function HappeningsPage() {
             <Words
               className="lede"
               delay={0.2}
-              text="The animation shows highlights. This is the full list, with the college's own published records for those who want the detail."
+              text="The animation shows highlights. This is the full list, with the group's own published records for those who want the detail."
             />
           </div>
 

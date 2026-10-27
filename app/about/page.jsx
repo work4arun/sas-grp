@@ -5,9 +5,9 @@ import Reveal, { Lines, Words } from "@/components/Reveal";
 import { ABOUT, GOVERNING_COUNCIL } from "@/lib/site";
 
 export const metadata = {
-  title: "About | Sasurie College of Engineering (Autonomous)",
+  title: "About | Sasurie Group of Institutions",
   description:
-    "Sasurie College of Engineering, Vijayamangalam, Tiruppur — founded in 2001 by the Ponmudi Muthusamy Gounder Trust, autonomous from January 2026, AICTE approved. Vision, mission, leadership and governing council.",
+    "Sasurie Group of Institutions, Vijayamangalam & Coimbatore — founded in 2001 by the Ponmudi Muthusamy Gounder Trust. Vision, mission, leadership, campuses and governing council.",
 };
 
 const LEADERSHIP = ABOUT.leadership.map((l) => ({
@@ -22,7 +22,7 @@ export default function AboutPage() {
       <section className="section">
         <div className="container">
           <div className="section-head">
-            <Lines lines={["About Sasurie College", "of Engineering."]} />
+            <Lines lines={["About Sasurie Group", "of Institutions."]} />
             <Words className="lede" delay={0.2} text={ABOUT.lede} />
           </div>
         </div>
@@ -102,16 +102,17 @@ export default function AboutPage() {
       <section className="section">
         <div className="container">
           <Reveal>
-            <h3 style={{ fontSize: "1.3rem", marginBottom: 6 }}>The campus at a glance</h3>
+            <h3 style={{ fontSize: "1.3rem", marginBottom: 6 }}>The campuses at a glance</h3>
             <PointList
               items={[
-                "A 10.61-acre campus near Vijayamangalam on the Coimbatore Bypass (NH544), Tiruppur district.",
-                "LCD-equipped classrooms, an auditorium, seminar halls and tutorial rooms.",
-                "Departmental laboratories and a computer centre with high-speed internet.",
-                "A power house with solar panels, UPS systems and inverters for uninterrupted supply.",
-                "Separate on-campus hostels for boys and girls, a 900 m² canteen and a 24-hour ATM.",
-                "A dispensary with beds, and an ambulance on standby.",
-                "Ramps, rails and washrooms for differently-abled students.",
+                "Vijayamangalam Campus on the Coimbatore Bypass (NH544), Tiruppur, hosting Engineering, Arts & Science, B-School, Pharmacy, and Nursing.",
+                "Coimbatore Campus hosting Arts, Science & Research, Academy of Engineering, Pharmacy, and Nursing.",
+                "Advanced departmental laboratories, research centres, and Centre for Research & Development (CFRD).",
+                "Centres of Excellence in Industry 4.0, IoT, Automation, and IBM collaborative labs.",
+                "Central libraries with over 46,000 volumes, DELNET subscriptions, and online digital libraries.",
+                "Separate on-campus hostels for boys and girls, 600-seat cafeteria, sports grounds, and 24-hour ATM.",
+                "Health dispensary with ambulance on standby and 12 GPS-enabled campus buses.",
+                "Barrier-free campus with ramps, rails and washrooms for differently-abled students.",
               ]}
             />
           </Reveal>

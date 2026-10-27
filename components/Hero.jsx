@@ -21,6 +21,8 @@ const RAYS = [8, 20, 32, 44, 56, 68, 80, 92].map((x, i) => ({
   d: (2.4 + (Math.abs(x - 50) / 42) * 1.4).toFixed(2),
 }));
 
+
+
 export default function Hero() {
   const root = useRef(null);
   const visual = useRef(null);
@@ -67,7 +69,7 @@ export default function Hero() {
       const currentFocus = focusRef.current;
 
       for (let lv = 0; lv < 4; lv++) {
-        // Continuous ascending harmonic wave (wave propagates from foundation lv:0 up to career lv:3)
+        // Continuous ascending harmonic wave (wave propagates from foundation lv:0 up to enterprise lv:3)
         const wave = Math.sin(t * 1.5 - lv * 0.72) * 8.5 + Math.cos(t * 0.8 - lv * 0.4) * 3.5;
 
         // Subtle 3D mouse parallax based on layer depth
@@ -137,12 +139,12 @@ export default function Hero() {
     <section className={`hero ${heroBoldVar}`} id="top" ref={root}>
       <div className="container hero-grid">
         <div className="hero-copy">
-          <Lines as="h1" className="hero-title" waitForLoad lines={["Engineers are", "built in layers."]} />
+          <Lines as="h1" className="hero-title" waitForLoad lines={["Leaders are", "built in layers."]} />
           <Words
             className="lede"
             waitForLoad
             delay={0.55}
-            text="At Sasurie College of Engineering (Autonomous), we turn core fundamentals into thriving careers—layer by layer, right on the Coimbatore–Tiruppur corridor."
+            text="At Sasurie Group of Institutions, we turn core fundamentals into thriving careers—layer by layer, right on the Coimbatore–Tiruppur–Erode corridor."
           />
           <div className={`cta-row hero-in${ready ? " go" : ""}`} style={{ "--delay": "1s" }}>
             <Magnetic>
@@ -163,14 +165,14 @@ export default function Hero() {
           {RAYS.map((r, i) => (
             <span className="ray" key={i} aria-hidden="true" style={{ "--x": `${r.x}%`, "--a": `${r.a}deg`, "--c": r.c, "--d": `${r.d}s` }} />
           ))}
-          <Image src="/brand/engg-clear.png" alt="Sasurie College of Engineering (Autonomous)" width={1100} height={268} />
+          <Image src="/brand/group-clear.png" alt="Sasurie Group of Institutions" width={1100} height={241} priority />
         </div>
         <div className={`hero-visual${ready ? " go" : ""}`} ref={visual}>
           <svg
             className="hero-svg"
             viewBox="-300 -300 600 640"
             role="img"
-            aria-label="Four stacked layers rising like an arrow: foundation, skills, industry and career"
+            aria-label="Four stacked layers rising like an arrow: foundation, competency, exposure and enterprise"
           >
             <defs>
               <clipPath id="ripple-clip">
@@ -222,6 +224,83 @@ export default function Hero() {
               </li>
             ))}
           </ul>
+        </div>
+
+        <div
+          className={`hero-blueprint-quote hero-in${ready ? " go" : ""}`}
+          style={{ "--delay": "1.65s" }}
+        >
+          <div className="hero-blueprint-eyebrow">
+            <span className="hero-blueprint-dot" aria-hidden="true" />
+            <span>The Sasurie Blueprint</span>
+          </div>
+          <p className="hero-blueprint-statement">
+            “True leaders are built in layers: grounded in{" "}
+            <a
+              href="#foundation"
+              className={`blueprint-term term-foundation${focus === 0 ? " is-focused" : ""}`}
+              onMouseEnter={() => setFocus(0)}
+              onMouseLeave={() => setFocus(null)}
+              onFocus={() => setFocus(0)}
+              onBlur={() => setFocus(null)}
+            >
+              Foundation
+            </a>
+            , forged in{" "}
+            <a
+              href="#competency"
+              className={`blueprint-term term-competency${focus === 1 ? " is-focused" : ""}`}
+              onMouseEnter={() => setFocus(1)}
+              onMouseLeave={() => setFocus(null)}
+              onFocus={() => setFocus(1)}
+              onBlur={() => setFocus(null)}
+            >
+              Competency
+            </a>
+            , expanded by{" "}
+            <a
+              href="#exposure"
+              className={`blueprint-term term-exposure${focus === 2 ? " is-focused" : ""}`}
+              onMouseEnter={() => setFocus(2)}
+              onMouseLeave={() => setFocus(null)}
+              onFocus={() => setFocus(2)}
+              onBlur={() => setFocus(null)}
+            >
+              Exposure
+            </a>
+            , and realized in{" "}
+            <a
+              href="#enterprise"
+              className={`blueprint-term term-enterprise${focus === 3 ? " is-focused" : ""}`}
+              onMouseEnter={() => setFocus(3)}
+              onMouseLeave={() => setFocus(null)}
+              onFocus={() => setFocus(3)}
+              onBlur={() => setFocus(null)}
+            >
+              Enterprise
+            </a>
+            .”
+          </p>
+          <a
+            href="#layers"
+            className="hero-blueprint-explore"
+            aria-label="Explore the Blueprint below"
+          >
+            <span>Explore the Blueprint</span>
+            <svg
+              viewBox="0 0 16 16"
+              width="12"
+              height="12"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M8 2.5v11M3.5 9l4.5 4.5 4.5-4.5" />
+            </svg>
+          </a>
         </div>
 
         </div>

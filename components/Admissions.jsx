@@ -4,9 +4,9 @@ import Drift from "./Drift";
 import AdmissionForm from "./AdmissionForm";
 
 const STEPS = [
-  { title: "Share your details", text: "Submit your name, mobile number and preferred programme, or apply directly at admissions.sasurie.com." },
-  { title: "Speak to a counsellor", text: "A counsellor calls you back from 94888 91111 or 94888 92222 to explain the programmes, fees and the Sasurie Talent Examination scholarship." },
-  { title: "Confirm your seat", text: "UG seats are filled through Anna University TNEA counselling on Class 12 marks, PG seats through TANCET or the Consortium CET, and management-quota seats through the college office." },
+  { title: "Share your details", text: "Submit your name, phone number and preferred programme, or apply directly online at admissions.sasurie.com." },
+  { title: "Speak to a counsellor", text: "A counsellor calls you back from 94888 91111, 94888 92222, 94425 93828 or 94888 93333 to explain programmes, autonomous curriculum, fees, and the Sasurie Talent Examination (STE) scholarship." },
+  { title: "Confirm your seat", text: "Confirm your admission across our Engineering (Autonomous), Arts & Science, Management, Pharmacy, Nursing, or Education programmes across Vijayamangalam & Coimbatore campuses." },
 ];
 
 export default function Admissions() {

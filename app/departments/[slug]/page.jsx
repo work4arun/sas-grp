@@ -14,8 +14,8 @@ export async function generateMetadata({ params }) {
   const d = DEPARTMENT_BY_SLUG[slug];
   if (!d) return {};
   return {
-    title: `${d.name} | Sasurie College of Engineering`,
-    description: `${d.name} at Sasurie College of Engineering: vision, mission, programme outcomes and laboratories. ${d.credential}.`,
+    title: `${d.name} | Sasurie Group of Institutions`,
+    description: `${d.name} at Sasurie Group of Institutions: vision, mission, programme outcomes and laboratories. ${d.credential}.`,
     alternates: { canonical: `/departments/${d.slug}` },
   };
 }
@@ -58,7 +58,7 @@ export default async function DepartmentPage({ params }) {
         />
       </section>
 
-      <section className="section" style={{ background: "var(--mist)", borderBlock: "1px solid var(--line)" }}>
+      <section className="section pf-inner-sec">
         <div className="container" style={block}>
           <Reveal>
             <h3 style={{ fontSize: "1.5rem" }}>Mission</h3>

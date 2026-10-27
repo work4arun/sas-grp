@@ -6,9 +6,9 @@ import Reveal, { Lines, Words } from "@/components/Reveal";
 import { DAY, VIDEO } from "@/lib/life";
 
 export const metadata = {
-  title: "Life at SAS | Sasurie College of Engineering",
+  title: "Life at SAS | Sasurie Group of Institutions",
   description:
-    "What student life at Sasurie College of Engineering looks like: photographs and video of the campus, classrooms and labs, festivals, sport, the hostels and the college buses.",
+    "What student life across Sasurie Group of Institutions looks like: photographs and video of the campuses, classrooms and labs, festivals, sports, hostels and transport fleet.",
   alternates: { canonical: "/life" },
 };
 
@@ -22,7 +22,7 @@ export default function LifePage() {
             <Words
               className="lede"
               delay={0.2}
-              text="Most of an engineering degree happens outside the lecture hall. These are the places and people you would spend four years with: the labs, the library, the ground, the hostel and the bus ride in."
+              text="Education thrives both inside and outside the lecture hall. These are the places and people you spend your journey with: state-of-the-art labs, libraries, sports grounds, modern hostels and connected transport."
             />
             <div className="cta-row">
               <a className="btn btn-primary" href="#gallery">Browse the photographs</a>
@@ -44,7 +44,7 @@ export default function LifePage() {
             <Words
               className="lede"
               delay={0.2}
-              text="From the first bus to the last bell, this is the college you would be joining. Every figure here is from the college's own facilities page."
+              text="From the first morning bus to the evening bells, explore vibrant campus life across Sasurie Group of Institutions."
             />
           </div>
           <ol className="lf-day-grid">

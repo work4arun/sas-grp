@@ -1,4 +1,4 @@
-# Sasurie College of Engineering: website
+# Sasurie Group of Institutions: website
 
 Next.js 16.4.2 (App Router) · React 19 · no UI libraries, fonts bundled locally.
 
@@ -11,7 +11,7 @@ npm run build && npm start
 ## Pages
 
 **`/` — the landing page.** Nav, hero (headline left, climbing arrow right), facts, marquee, the sticky-arrow story of the
-four layers (Foundation, Skills, Industry, Career), programmes, admissions, the Sasurie family and the footer.
+four layers (Foundation, Competency, Exposure, Enterprise), programmes, admissions, the Sasurie family and the footer.
 
 The seeded pages below share that landing page's nav, footer, cards and type scale — no new stylesheet rules, so the
 look is unchanged. Each one is content transferred from the college's existing site:

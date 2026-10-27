@@ -2,31 +2,16 @@ import PageShell from "@/components/PageShell";
 import FactCards from "@/components/FactCards";
 import PointList from "@/components/PointList";
 import Reveal, { Lines, Words } from "@/components/Reveal";
-import { PROGRAMMES } from "@/lib/programmes";
-import { DEPARTMENTS, DEPARTMENT_BY_PROGRAMME, DEPARTMENT_BY_SLUG } from "@/lib/departments";
+import Programmes from "@/components/Programmes";
+import { DEPARTMENT_BY_SLUG } from "@/lib/departments";
 
 export const metadata = {
-  title: "Departments | Sasurie College of Engineering",
+  title: "Academic Programmes & Departments | Sasurie Group of Institutions",
   description:
-    "Eight undergraduate engineering departments — CSE, CSE (Cyber Security), AI and Data Science, IT, ECE, EEE, Mechanical and Civil — with Science and Humanities, M.E. Computer Science and Engineering and MBA at Sasurie College of Engineering.",
+    "Explore 37+ academic programmes across Engineering, Computing, Arts, Commerce, Management, Healthcare, and Postgraduate studies with state-of-the-art laboratories and autonomous curriculum.",
 };
 
 const detailLink = (d) => ({ label: "Vision, mission and laboratories", href: `/departments/${d.slug}` });
-
-// The foundation department has its own section below, so it is not repeated here.
-const UG = PROGRAMMES.filter((p) => p.short !== "S and H").map((p) => {
-  const d = DEPARTMENT_BY_PROGRAMME[p.short];
-  const bits = [p.line, p.build];
-  if (d.since) bits.push(`Established in ${d.since}.`);
-  return {
-    tag: d.credential,
-    title: p.name,
-    text: bits.join(" "),
-    color:
-      p.short === "CSE" ? "var(--red)" : p.short === "AI and DS" ? "var(--gold)" : "var(--blue)",
-    links: [detailLink(d), { label: d.email, href: `mailto:${d.email}` }],
-  };
-});
 
 const pgCard = (slug, color, text) => {
   const d = DEPARTMENT_BY_SLUG[slug];
@@ -79,21 +64,17 @@ const CFAC_ACTIVITIES = [
 export default function DepartmentsPage() {
   return (
     <PageShell>
-      <section className="section">
-        <div className="container">
-          <div className="section-head">
-            <Lines lines={["Departments and", "programmes."]} />
-            <Words
-              className="lede"
-              delay={0.2}
-              text="Eight undergraduate engineering departments, the Science and Humanities department for the first year, and two postgraduate programmes. Each department can be contacted directly by email."
-            />
-          </div>
-        </div>
-        <FactCards items={UG} minWidth={320} />
-      </section>
+      {/* 1. Primary Interactive Course Catalogue in Silver Textured Theme */}
+      <Programmes
+        isStandalonePage={true}
+        initialShowAll={false}
+        headingEyebrow="Academic Programmes & Courses"
+        headingTitle={["Academic Programmes", "and departments."]}
+        headingLede="Explore 37+ undergraduate and postgraduate degrees across Engineering, Computing, Arts, Commerce, Management, Healthcare and Education with direct faculty contacts and modern curriculum."
+      />
 
-      <section className="section" style={{ background: "var(--mist)", borderBlock: "1px solid var(--line)" }}>
+      {/* 2. Postgraduate Departments in Silver Frosted Glass Container */}
+      <section className="section pf-inner-sec" id="postgraduate">
         <div className="container">
           <div className="section-head">
             <Lines lines={["Postgraduate", "programmes."]} />
@@ -107,7 +88,8 @@ export default function DepartmentsPage() {
         <FactCards items={PG} minWidth={340} />
       </section>
 
-      <section className="section">
+      {/* 3. First-Year Foundation */}
+      <section className="section pf-inner-sec" id="foundation">
         <div className="container">
           <div className="section-head">
             <Lines lines={["First-year", "foundation."]} />
@@ -117,7 +99,8 @@ export default function DepartmentsPage() {
         <FactCards items={SH} minWidth={340} />
       </section>
 
-      <section className="section" style={{ background: "var(--mist)", borderBlock: "1px solid var(--line)" }}>
+      {/* 4. Centre for Academic Courses (CFAC) in Frosted Glass Container */}
+      <section className="section pf-inner-sec" id="cfac">
         <div className="container">
           <div className="section-head">
             <Lines lines={["Centre for", "Academic Courses."]} />
@@ -127,13 +110,25 @@ export default function DepartmentsPage() {
               text="The centre administers all academic matters of the institute. It organises meetings of the Boards of Studies, Standing Committees and Academic Council, and prepares lesson plans and the academic schedule for all UG and PG programmes."
             />
           </div>
-          <div style={{ display: "grid", gap: "clamp(32px, 5vw, 64px)", marginTop: "clamp(24px, 4vw, 48px)" }}>
-            <Reveal>
-              <h3 style={{ fontSize: "1.5rem" }}>What the centre handles</h3>
+          <div className="pf-cfac-grid">
+            <Reveal className="pf-glass-box">
+              <div className="pf-card-top" style={{ marginBottom: 14 }}>
+                <span className="fact-beacon" style={{ background: "var(--red)" }} aria-hidden="true" />
+                <span className="pf-degree" style={{ color: "var(--red)", borderColor: "var(--red-line, var(--line))" }}>
+                  Autonomous Academic Affairs
+                </span>
+              </div>
+              <h3 style={{ fontSize: "1.45rem", marginBottom: 14, color: "var(--ink)" }}>What the centre handles</h3>
               <PointList items={CFAC_ACTIVITIES} />
             </Reveal>
-            <Reveal>
-              <h3 style={{ fontSize: "1.5rem" }}>Regulations and curriculum</h3>
+            <Reveal className="pf-glass-box">
+              <div className="pf-card-top" style={{ marginBottom: 14 }}>
+                <span className="fact-beacon" style={{ background: "var(--blue)" }} aria-hidden="true" />
+                <span className="pf-degree" style={{ color: "var(--blue)", borderColor: "var(--blue-line, var(--line))" }}>
+                  Curriculum &amp; Syllabi
+                </span>
+              </div>
+              <h3 style={{ fontSize: "1.45rem", marginBottom: 14, color: "var(--ink)" }}>Regulations and curriculum</h3>
               <PointList
                 items={[
                   "Undergraduate regulations: Anna University 2021 and 2025, and Autonomous 2026.",
@@ -144,7 +139,7 @@ export default function DepartmentsPage() {
               />
             </Reveal>
           </div>
-          <div className="cta-row" style={{ marginTop: "clamp(40px, 6vw, 72px)" }}>
+          <div className="cta-row" style={{ marginTop: "clamp(36px, 5vw, 60px)" }}>
             <a className="btn btn-primary" href="/admissions">Admissions and eligibility</a>
             <a className="btn btn-ghost" href="/placements">Placements</a>
           </div>

@@ -7,10 +7,11 @@ import Image from "next/image";
  */
 export default function FactCards({ items, minWidth = 240 }) {
   return (
-    <div
-      className="container facts-grid"
-      style={{ gridTemplateColumns: `repeat(auto-fit, minmax(${minWidth}px, 1fr))` }}
-    >
+    <div className="facts-panel">
+      <div
+        className="container facts-grid"
+        style={{ gridTemplateColumns: `repeat(auto-fit, minmax(${minWidth}px, 1fr))` }}
+      >
       {items.map((f, i) => (
         <div
           key={`${f.title}-${i}`}
@@ -52,6 +53,7 @@ export default function FactCards({ items, minWidth = 240 }) {
           )}
         </div>
       ))}
+      </div>
     </div>
   );
 }

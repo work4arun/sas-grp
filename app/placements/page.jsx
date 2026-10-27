@@ -5,10 +5,17 @@ import Reveal, { Lines, Words } from "@/components/Reveal";
 import { PLACEMENT } from "@/lib/site";
 
 export const metadata = {
-  title: "Placements | Sasurie College of Engineering",
+  title: "Placements | Sasurie Group of Institutions",
   description:
-    "The Department of Placement and Career Development at Sasurie College of Engineering: aptitude and soft-skill training, industry–institution interaction, campus and off-campus drives. Contact sceplacement@sasurie.com.",
+    "Placements at Sasurie Group of Institutions: 150+ recruiting companies, 1500+ students placed, 93.12% placement rate, ₹48 LPA highest package, aptitude & soft-skills training.",
 };
+
+const STATS_CARDS = PLACEMENT.stats.map((s, i) => ({
+  tag: "Track record",
+  title: s.value,
+  text: s.label,
+  color: ["var(--red)", "var(--gold)", "var(--green)", "var(--blue)", "var(--gold)", "var(--green)"][i % 6],
+}));
 
 const CDC = {
   lede: "The Career Development Centre (CDC) supports students' professional growth through skill development, career guidance, industry exposure, training, internships and mentorship, and works to close the gap between academics and industry.",
@@ -17,13 +24,13 @@ const CDC = {
   experiential:
     "Practical exposure, real-world experience and industry engagement opportunities that build communication, technical, aptitude and leadership skills.",
   training: [
-    "Aptitude preparation.",
-    "Technical skill development.",
-    "Soft-skills coaching.",
-    "Resume writing support.",
-    "Mock interview practice.",
-    "Coding practice.",
-    "Group discussion practice.",
+    "Aptitude and problem-solving preparation.",
+    "Full-stack and emerging technology skill development.",
+    "Soft-skills coaching and communication mastery.",
+    "Resume writing and professional portfolio building.",
+    "Mock interview practice with corporate HR leaders.",
+    "Competitive coding and algorithmic problem solving.",
+    "Group discussion practice and leadership simulations.",
   ],
   team: ["Naveen Kumar C, Executive, Career Development Centre.", "Haripriya P, Executive, Corporate Relations."],
 };
@@ -39,36 +46,40 @@ export default function PlacementsPage() {
           </div>
         </div>
 
-        <FactCards
-          minWidth={320}
-          items={[
-            {
-              tag: "The office",
-              title: "Dedicated placement block",
-              text: PLACEMENT.overview[0],
-              color: "var(--blue)",
-              rgb: "63, 107, 181",
-            },
-            {
-              tag: "The focus",
-              title: "Recruitment training",
-              text: PLACEMENT.overview[1],
-              color: "var(--green)",
-              rgb: "148, 201, 61",
-            },
-            {
-              tag: "Contact",
-              title: "Contact the DPCD",
-              text: "Reach the placement office directly, including for campus recruitment enquiries from companies.",
-              color: "var(--gold)",
-              rgb: "253, 185, 19",
-              links: [
-                { label: "sceplacement@sasurie.com", href: "mailto:sceplacement@sasurie.com" },
-                { label: "Call +91 94425 93803", href: "tel:+919442593803" },
-              ],
-            },
-          ]}
-        />
+        <FactCards items={STATS_CARDS} minWidth={220} />
+
+        <div className="container" style={{ marginTop: "clamp(36px, 5vw, 64px)" }}>
+          <FactCards
+            minWidth={320}
+            items={[
+              {
+                tag: "The office",
+                title: "Dedicated placement block",
+                text: PLACEMENT.overview[0],
+                color: "var(--blue)",
+                rgb: "63, 107, 181",
+              },
+              {
+                tag: "The focus",
+                title: "Recruitment training",
+                text: PLACEMENT.overview[1],
+                color: "var(--green)",
+                rgb: "148, 201, 61",
+              },
+              {
+                tag: "Contact",
+                title: "Contact the DPCD",
+                text: "Reach the placement office directly, including for campus recruitment enquiries from companies.",
+                color: "var(--gold)",
+                rgb: "253, 185, 19",
+                links: [
+                  { label: "sceplacement@sasurie.com", href: "mailto:sceplacement@sasurie.com" },
+                  { label: "Call +91 94425 93803", href: "tel:+919442593803" },
+                ],
+              },
+            ]}
+          />
+        </div>
 
         <div
           className="container"

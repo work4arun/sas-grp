@@ -3,8 +3,9 @@
 import { useEffect, useRef } from "react";
 
 const fields = [
-  "Computer Science", "Artificial Intelligence", "Data Science", "Cyber Security",
-  "Information Technology", "Electronics", "Electrical", "Mechanical", "Civil",
+  "Engineering & Technology", "Arts & Science", "Management & B-School", "Pharmacy & Research",
+  "Nursing & Healthcare", "Artificial Intelligence", "Computer Applications", "Commerce & Finance",
+  "Education & Teacher Training",
 ];
 const colors = ["#E01F26", "#FDB913", "#3F6BB5", "#94C93D"];
 
@@ -44,8 +45,8 @@ export default function Marquee() {
       last = y;
       const r = el.getBoundingClientRect();
       if (r.bottom > -200 && r.top < window.innerHeight + 200) {
-        el.style.setProperty("--sx", ((r.top - window.innerHeight / 2) * 0.35).toFixed(1));
-        el.style.setProperty("--v", Math.max(-14, Math.min(14, vel)).toFixed(2));
+        el.style.setProperty("--sx", ((r.top - window.innerHeight / 2) * 0.10).toFixed(1));
+        el.style.setProperty("--v", Math.max(-4, Math.min(4, vel)).toFixed(2));
       }
       if (active) raf = requestAnimationFrame(tick);
     };

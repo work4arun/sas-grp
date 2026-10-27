@@ -5,9 +5,9 @@ import Reveal, { Lines, Words } from "@/components/Reveal";
 import { ADMISSION, SITE } from "@/lib/site";
 
 export const metadata = {
-  title: "Admissions | Sasurie College of Engineering",
+  title: "Admissions | Sasurie Group of Institutions",
   description:
-    "Admissions at Sasurie College of Engineering: TNEA counselling for UG, TANCET or the Consortium CET for PG, eligibility criteria, the Sasurie Talent Examination scholarship with up to 100% fee waiver, and the college's contact numbers.",
+    "Admissions at Sasurie Group of Institutions: Engineering, Arts & Science, Management, Pharmacy, Nursing, and Education. Merit scholarships up to 100% fee waiver, sports quota, and application details.",
 };
 
 export default function AdmissionsPage() {
@@ -44,7 +44,7 @@ export default function AdmissionsPage() {
             <a className="btn btn-primary" href={SITE.applyUrl} target="_blank" rel="noreferrer">
               Apply online ↗
             </a>
-            <a className="btn btn-ghost" href="tel:9488891111">Call 94888 91111</a>
+            <a className="btn btn-ghost" href="tel:9442593828">Call 94425 93828</a>
             <a className="btn btn-ghost" href={ADMISSION.brochureUrl} target="_blank" rel="noreferrer">Admission brochure ↗</a>
           </div>
         </div>

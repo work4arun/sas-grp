@@ -2,27 +2,34 @@
 
 import { useState } from "react";
 
-// Every programme the college admits to, as published on sasurieengg.com.
+// Every programme across the Sasurie Group of Institutions (sasurie.com)
 export const PROGRAMME_OPTIONS = [
   "B.E. Computer Science and Engineering",
-  "B.E. Computer Science and Engineering (Cyber Security)",
   "B.Tech. Artificial Intelligence and Data Science",
+  "B.E. CSE (Cyber Security)",
   "B.Tech. Information Technology",
   "B.E. Electronics and Communication Engineering",
   "B.E. Electrical and Electronics Engineering",
   "B.E. Mechanical Engineering",
   "B.E. Civil Engineering",
+  "B.Sc. Computer Science (AI & DS) with IBM",
+  "B.Sc. Artificial Intelligence & Machine Learning",
+  "B.Sc. Costume Design and Fashion (CDF)",
+  "B.Sc. Visual Communication (VisCom)",
+  "BCA (Data Science & AI / Cloud Computing)",
+  "B.Com (Finance / Accounting / CA / PA / Fintech)",
+  "BBA (Aviation & AI / Logistics & Supply Chain)",
+  "B.Pharm (Bachelor of Pharmacy)",
+  "B.Sc. Nursing",
+  "B.Ed. (Bachelor of Education)",
   "M.E. Computer Science and Engineering",
-  "MBA (HR / Finance / Marketing / Business Analytics)",
+  "MBA (Digital Marketing / Logistics / Aviation / Finance / HR)",
+  "M.Sc. Computer Science / Mathematics",
 ];
 
 // Where a request goes.
-// 1. Set NEXT_PUBLIC_ADMISSION_ENDPOINT to any URL that accepts a JSON POST (a form
-//    relay, a CRM webhook, Google Apps Script) and the form posts the details there.
-// 2. With no endpoint set, the request is handed to the admissions desk on WhatsApp,
-//    using the call-back number published on the college site.
 const ENDPOINT = process.env.NEXT_PUBLIC_ADMISSION_ENDPOINT || "";
-const WHATSAPP = process.env.NEXT_PUBLIC_ADMISSION_WHATSAPP || "919488891111";
+const WHATSAPP = process.env.NEXT_PUBLIC_ADMISSION_WHATSAPP || "919442593828";
 
 /** The call-back form, shared by both page styles. */
 export default function AdmissionForm() {
@@ -112,8 +119,8 @@ export default function AdmissionForm() {
         <i className="spinner" aria-hidden="true" />
       </button>
       <p className="fine">
-        We use these details only to contact you about admissions. You can also call 94888 91111
-        or apply online at admissions.sasurie.com.
+        We use these details only to contact you about admissions. You can also call 94425 93828
+        or 94888 93333, or apply online at edsolutions360.com/apply/sasurie.
       </p>
     </form>
   );

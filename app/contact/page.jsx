@@ -6,13 +6,13 @@ import { Lines, Words } from "@/components/Reveal";
 import { DEPARTMENT_CONTACTS, SITE } from "@/lib/site";
 
 export const metadata = {
-  title: "Contact | Sasurie College of Engineering",
+  title: "Contact | Sasurie Group of Institutions",
   description:
-    "Sasurie College of Engineering, Coimbatore Bypass (NH544), Vijayamangalam, Tiruppur district, Tamil Nadu 638056. Call 94888 91111, 94888 92222 or 94888 93333, or write to info@sasurie.com.",
+    "Sasurie Group of Institutions — Vijayamangalam Campus (NH544, Tiruppur) & Coimbatore Campus. Call 94425 93828, 94888 93333, or write to info@sasurie.com.",
 };
 
 const MAPS = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(
-  "Sasurie College of Engineering, Coimbatore Bypass NH544, Vijayamangalam, Tiruppur, Tamil Nadu 638056"
+  "Sasurie Group of Institutions, Coimbatore Bypass NH544, Vijayamangalam, Tiruppur, Tamil Nadu 638056"
 );
 
 export default function ContactPage() {
@@ -21,11 +21,11 @@ export default function ContactPage() {
       <section className="section">
         <div className="container">
           <div className="section-head">
-            <Lines lines={["Contact", "the college."]} />
+            <Lines lines={["Contact Sasurie", "Group of Institutions."]} />
             <Words
               className="lede"
               delay={0.2}
-              text="Telephone, email, address and department contacts, with a call-back form that reaches the admissions desk."
+              text="Telephone, email, campus locations and institutional contacts across our Vijayamangalam and Coimbatore campuses."
             />
           </div>
         </div>
@@ -101,7 +101,7 @@ export default function ContactPage() {
         />
 
         <div className="container" style={{ marginTop: "clamp(40px, 6vw, 72px)" }}>
-          <h3 style={{ fontSize: "1.3rem", marginBottom: 8 }}>Follow the college</h3>
+          <h3 style={{ fontSize: "1.3rem", marginBottom: 8 }}>Follow Sasurie Institutions</h3>
           <div className="cta-row">
             {SITE.social.map((s) => (
               <a key={s.label} className="btn btn-ghost" href={s.href} target="_blank" rel="noreferrer">

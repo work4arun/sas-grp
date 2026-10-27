@@ -1,150 +1,372 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
+import Link from "next/link";
 import Tower from "./Tower";
-import Reveal, { Words } from "./Reveal";
+import { Lines, Words } from "./Reveal";
+import Magnetic from "./Magnetic";
 import { LAYERS } from "@/lib/layers";
 
-const PANELS = [
+export const BLUEPRINT_PANELS = [
   {
     key: "foundation",
-    years: "Years 1 and 2",
+    level: 0,
+    number: "01",
+    years: "Years 1 & 2",
+    tagline: "Grounded in Foundation",
     title: "Foundation",
-    lead: "Get the fundamentals right.",
-    text: "Mathematics, physics, chemistry and programming decide how far you can go later. The first two years run through the Science and Humanities department, with problem practice and add-on courses alongside the Anna University syllabus, so a different school background never holds anyone back.",
-    points: ["Programming from the first week", "Core science and mathematics with problem practice", "Add-on and value-added courses alongside the syllabus"],
+    lead: "Master the Fundamentals",
+    summary:
+      "Rigorous grounding in mathematics, core sciences, and code—ensuring an equal baseline for every student.",
+    points: [
+      "Programming from Day 1",
+      "Core Sciences & Problem Workshops",
+      "Equal-Ground Bridge Modules",
+      "Technical Communication & Literacy",
+    ],
+    stats: [
+      { value: "Week 1", label: "Code from Day 1" },
+      { value: "100%", label: "Equal Baseline" },
+      { value: "46k+", label: "Library Volumes" },
+    ],
+    linkHref: "/departments/science-and-humanities",
+    linkLabel: "Explore Science & Humanities",
   },
   {
-    key: "skills",
-    years: "Years 2 and 3",
-    title: "Skills",
-    lead: "Learn by building.",
-    text: "Labs and project work move from demonstrations to things you design yourself — departmental laboratories, the computer centre with high-speed internet, and the Central Library, which holds more than 46,000 volumes and DELNET databases of papers.",
-    points: ["Lab-first teaching in every department", "Mini projects that grow into your final-year project", "Electives, certifications and library research access"],
+    key: "competency",
+    level: 1,
+    number: "02",
+    years: "Years 2 & 3",
+    tagline: "Forged in Competency",
+    title: "Competency",
+    lead: "Build Practical Depth",
+    summary:
+      "Turning concepts into working capability through lab immersion, prototype builds, and industry credentials.",
+    points: [
+      "Lab-First Applied Pedagogy",
+      "Hardware & Software Prototypes",
+      "Industry-Standard Certifications",
+      "High-Performance Computing Labs",
+    ],
+    stats: [
+      { value: "12+", label: "Advanced Labs" },
+      { value: "100+", label: "Working Prototypes" },
+      { value: "DELNET", label: "Research Journals" },
+    ],
+    linkHref: "/departments",
+    linkLabel: "Explore Engineering Departments",
   },
   {
-    key: "industry",
-    years: "Years 3 and 4",
-    title: "Industry",
-    lead: "Meet the people who will hire you.",
-    text: "Tiruppur's knitwear industry and Coimbatore's manufacturing and IT belt are on your doorstep. The Institution–Industry Cell keeps the college's 350+ industry partners and 100+ MoUs within reach, and Centres of Excellence in Industry 4.0, automation, smart manufacturing and IoT bring that work onto the campus.",
-    points: ["Internships and industrial visits", "Guest sessions from working engineers", "Industry-linked project work in the Centres of Excellence"],
+    key: "exposure",
+    level: 2,
+    number: "03",
+    years: "Years 3 & 4",
+    tagline: "Expanded by Exposure",
+    title: "Exposure",
+    lead: "Connect with Industry",
+    summary:
+      "Direct immersion in corporate ecosystems with 350+ active partners, masterclasses, and campus Centres of Excellence.",
+    points: [
+      "350+ Active Corporate Partners",
+      "Live Centres of Excellence (CoE)",
+      "Practicing Engineer Mentorship",
+      "Industrial Visits & Live Projects",
+    ],
+    stats: [
+      { value: "350+", label: "Corporate Partners" },
+      { value: "100+", label: "Active MoUs" },
+      { value: "CoE", label: "Centres of Excellence" },
+    ],
+    linkHref: "/placements",
+    linkLabel: "See Industry Partnerships",
   },
   {
-    key: "career",
-    years: "Final year",
-    title: "Career",
-    lead: "Leave with options.",
-    text: "The Department of Placement and Career Development runs from a dedicated block with full-time trainers for aptitude and soft skills, so campus drives, higher studies, government examinations and starting your own venture are all open to you on graduation day.",
-    points: ["Aptitude, communication and interview training", "Campus and off-campus placement drives", "Support for GATE, higher studies and start-ups"],
+    key: "enterprise",
+    level: 3,
+    number: "04",
+    years: "Final Year & Beyond",
+    tagline: "Realized in Enterprise",
+    title: "Enterprise",
+    lead: "Lead, Venture & Achieve",
+    summary:
+      "Launchpad for top-tier careers, startup venture incubation, and high-package placements up to ₹48 LPA.",
+    points: [
+      "Placements up to ₹48 LPA",
+      "On-Campus Incubation & Grants",
+      "Executive & Interview Coaching",
+      "12,000+ Global Alumni Network",
+    ],
+    stats: [
+      { value: "₹48 LPA", label: "Highest Package" },
+      { value: "12k+", label: "Global Alumni" },
+      { value: "92%", label: "Placement Rate" },
+    ],
+    linkHref: "/placements",
+    linkLabel: "Explore Placements & Careers",
   },
 ];
 
 const colorOf = Object.fromEntries(LAYERS.map((l) => [l.key, l.fill]));
+const darkColorOf = Object.fromEntries(LAYERS.map((l) => [l.key, l.fillDark]));
 
-export default function Story() {
+export default function Story({ isStandalone = false }) {
   const [active, setActive] = useState(0);
-  const refs = useRef([]);
-  const panelsRef = useRef(null);
+  const [hoveredLevel, setHoveredLevel] = useState(null);
 
-  // fills the vertical rail as you scroll through the layers
-  useEffect(() => {
-    const el = panelsRef.current;
-    if (!el) return;
-    let raf = 0;
-    const update = () => {
-      raf = 0;
-      const r = el.getBoundingClientRect();
-      const mid = window.innerHeight * 0.55;
-      const p = Math.max(0, Math.min(1, (mid - r.top) / r.height));
-      el.style.setProperty("--p", p.toFixed(3));
-    };
-    const on = () => { if (!raf) raf = requestAnimationFrame(update); };
-    update();
-    window.addEventListener("scroll", on, { passive: true });
-    window.addEventListener("resize", on);
-    return () => {
-      window.removeEventListener("scroll", on);
-      window.removeEventListener("resize", on);
-      if (raf) cancelAnimationFrame(raf);
-    };
+  const [isPaused, setIsPaused] = useState(false);
+
+  const current = BLUEPRINT_PANELS[active] || BLUEPRINT_PANELS[0];
+  const activeColor = colorOf[current.key];
+  const activeDarkColor = darkColorOf[current.key];
+
+  const goTo = useCallback((idx) => {
+    if (idx >= 0 && idx < BLUEPRINT_PANELS.length) {
+      setActive(idx);
+    }
   }, []);
 
-  useEffect(() => {
-    const io = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting) setActive(Number(e.target.dataset.index));
-        });
-      },
-      { rootMargin: "-42% 0px -48% 0px" }
-    );
-    refs.current.forEach((el) => el && io.observe(el));
-    return () => io.disconnect();
+  const nextSlide = useCallback(() => {
+    setActive((prev) => (prev + 1) % BLUEPRINT_PANELS.length);
   }, []);
 
-  const opacities = [0, 1, 2, 3].map((lv) => (lv <= active ? 1 : 0.13));
-  const current = PANELS[active];
+  const prevSlide = useCallback(() => {
+    setActive((prev) => (prev - 1 + BLUEPRINT_PANELS.length) % BLUEPRINT_PANELS.length);
+  }, []);
+
+  const videoRef = useRef(null);
+
+  // Ensure background video plays reliably across all browsers (WebKit/Safari autoplay policy)
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.defaultMuted = true;
+      videoRef.current.muted = true;
+      videoRef.current.play?.().catch(() => {
+        // Autoplay may be restricted by strict battery saver mode
+      });
+    }
+  }, []);
+
+  // Mild automatic loop through Foundation, Competency, Exposure, Enterprise
+  useEffect(() => {
+    if (isPaused) return;
+    if (typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const timer = setInterval(() => {
+      setActive((prev) => (prev + 1) % BLUEPRINT_PANELS.length);
+    }, 5500);
+
+    return () => clearInterval(timer);
+  }, [isPaused, active]);
+
+  // Sync with URL hash if provided
+  useEffect(() => {
+    const handleHash = () => {
+      const hash = window.location.hash.replace("#", "").toLowerCase();
+      const idx = BLUEPRINT_PANELS.findIndex((p) => p.key === hash);
+      if (idx !== -1) goTo(idx);
+    };
+    handleHash();
+    window.addEventListener("hashchange", handleHash);
+    return () => window.removeEventListener("hashchange", handleHash);
+  }, [goTo]);
+
+  // Keyboard navigation
+  useEffect(() => {
+    const onKeyDown = (e) => {
+      if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA") return;
+      if (e.key === "ArrowRight") nextSlide();
+      else if (e.key === "ArrowLeft") prevSlide();
+      else if (e.key >= "1" && e.key <= "4") goTo(Number(e.key) - 1);
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [nextSlide, prevSlide, goTo]);
+
+  // Tower opacities highlighting active or hovered layer
+  const effectiveFocus = hoveredLevel !== null ? hoveredLevel : active;
+  const opacities = [0, 1, 2, 3].map((lv) => {
+    if (lv === effectiveFocus) return 1;
+    if (lv < effectiveFocus) return 0.65;
+    return 0.35;
+  });
 
   return (
-    <section className="story section" id="layers">
-      <div className="container">
-        <div className="section-head">
+    <section
+      className={`story section${isStandalone ? " is-standalone" : ""}`}
+      id="layers"
+      aria-label="The Sasurie Blueprint: Four Layers of Leadership"
+    >
+      <div id="foundation" className="sr-anchor" aria-hidden="true" />
+      <div id="competency" className="sr-anchor" aria-hidden="true" />
+      <div id="exposure" className="sr-anchor" aria-hidden="true" />
+      <div id="enterprise" className="sr-anchor" aria-hidden="true" />
+
+      {/* Cinematic Ambient Background Video */}
+      <div className="story-video-bg" aria-hidden="true">
+        <video
+          ref={videoRef}
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+          className="story-video-media"
+        >
+          <source src="/sasori.mp4" type="video/mp4" />
+        </video>
+        <div className="story-video-overlay" />
+      </div>
+
+      <div className="container story-container">
+        {/* Header Introduction */}
+        <div className="section-head story-head">
+          <div className="story-head-title-group">
+            <div className="story-badge-row">
+              <span className="story-badge">
+                <span
+                  className="story-beacon"
+                  aria-hidden="true"
+                  style={{ background: activeColor, boxShadow: `0 0 8px ${activeColor}` }}
+                />
+                THE SASURIE BLUEPRINT
+              </span>
+              <span className="story-subtitle">Pedagogical Framework · Leadership Model</span>
+            </div>
+            <Lines lines={["True leaders are", "built in layers."]} />
+          </div>
           <Words
             className="lede"
             delay={0.2}
-            text="Look at the Sasurie mark and you will see four layers stacked into an arrow. That is how we teach: each layer sits on the one below, and none is skipped."
+            text="Look at the Sasurie mark and you will see four chevrons stacked into an arrow. That is how we teach: grounded in Foundation, forged in Competency, expanded by Exposure, and realized in Enterprise. Each layer sits on the one below, and none is skipped."
           />
         </div>
 
-        <div className="story-grid">
-          <div className="story-sticky">
-            <Reveal variant="scale" className="story-tower">
-              <Tower opacities={opacities} current={active} />
-            </Reveal>
-            <div className="story-meter" aria-live="polite">
-              <div className="meter-dots" aria-hidden="true">
-                {PANELS.map((p, i) => (
-                  <span key={p.key} className={i <= active ? "on" : ""} style={{ "--c": colorOf[p.key] }} />
+        {/* Compact, Open Interactive Stage */}
+        <div
+          className={`story-mild-grid${isPaused ? " is-paused" : ""}`}
+          style={{
+            "--active-c": activeColor,
+            "--active-dark-c": activeDarkColor,
+          }}
+          onMouseEnter={() => setIsPaused(true)}
+          onMouseLeave={() => setIsPaused(false)}
+          onFocusCapture={() => setIsPaused(true)}
+          onBlurCapture={() => setIsPaused(false)}
+        >
+          {/* Left Column: 3D Chevron Tower on Transparent Canvas */}
+          <div className="story-tower-side">
+            <div className="story-tower-card">
+              <div className="tower-kicker">
+                <span className="kicker-dot" style={{ background: activeColor }} />
+                <span>Level {current.level} · {current.title} ({current.years})</span>
+              </div>
+
+              <div className="tower-container">
+                <div className="tower-backdrop-ripples" aria-hidden="true">
+                  <span className="tower-ripple r1" />
+                  <span className="tower-ripple r2" />
+                  <span className="tower-ripple r3" />
+                  <span className="tower-ripple r4" />
+                </div>
+                <Tower
+                  opacities={opacities}
+                  current={active}
+                  onClick={(lv) => goTo(lv)}
+                  onEnter={(lv) => setHoveredLevel(lv)}
+                  onLeave={() => setHoveredLevel(null)}
+                />
+              </div>
+
+              <div className="tower-stats-row">
+                {current.stats.map((st) => (
+                  <div key={st.label} className="tower-stat-item">
+                    <strong style={{ color: activeColor }}>{st.value}</strong>
+                    <span>{st.label}</span>
+                  </div>
                 ))}
               </div>
-              <p key={current.key} className="meter-text">
-                Layer {active + 1} of 4: <strong>{current.title}</strong>
-              </p>
             </div>
           </div>
 
-          <div className="story-panels" ref={panelsRef}>
-            {PANELS.map((p, i) => (
+          {/* Right Column: Refined Transparent Story Card */}
+          <div className="story-card-side">
+            <div className="story-content-card">
+              <span className="story-card-bar" style={{ background: activeColor }} aria-hidden="true" />
+
+              {/* Segmented Layer Selector Pills */}
+              <div className="story-pills-bar" role="tablist" aria-label="Explore the four layers">
+                {BLUEPRINT_PANELS.map((p, i) => {
+                  const isActive = i === active;
+                  const c = colorOf[p.key];
+                  return (
+                    <button
+                      key={p.key}
+                      type="button"
+                      role="tab"
+                      id={`tab-${p.key}`}
+                      aria-controls={`panel-${p.key}`}
+                      aria-selected={isActive}
+                      className={`story-pill-btn${isActive ? " is-active" : ""}`}
+                      onClick={() => goTo(i)}
+                      style={{ "--pill-c": c }}
+                    >
+                      <span className="pill-dot" aria-hidden="true" style={{ background: c }} />
+                      <span className="pill-text">{p.number} {p.title}</span>
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* Active Layer Content */}
               <article
-                key={p.key}
-                id={p.key}
-                className={`panel${i === active ? " is-active" : ""}`}
-                data-index={i}
-                ref={(el) => (refs.current[i] = el)}
-                style={{ "--c": colorOf[p.key] }}
+                key={current.key}
+                id={`panel-${current.key}`}
+                role="tabpanel"
+                aria-labelledby={`tab-${current.key}`}
+                className="story-panel-body"
               >
-                <Reveal className="panel-inner">
-                  <p className="panel-years">
-                    <i aria-hidden="true" />
-                    {p.years}
-                  </p>
-                  <h3 className="panel-title">{p.title}</h3>
-                  <p className="panel-lead">{p.lead}</p>
-                  <p className="panel-text">{p.text}</p>
-                  <ul className="panel-points">
-                    {p.points.map((pt, j) => (
-                      <li key={pt} style={{ "--i": j }}>
-                        <svg viewBox="0 0 20 14" width="20" height="14" aria-hidden="true">
-                          <path d="M2 11L10 3L18 11" />
-                        </svg>
-                        {pt}
-                      </li>
-                    ))}
-                  </ul>
-                </Reveal>
+                <div className="panel-kicker-row">
+                  <span className="panel-tag" style={{ color: activeColor }}>
+                    {current.tagline}
+                  </span>
+                  <span className="panel-years-tag">{current.years}</span>
+                </div>
+
+                <div className="panel-title-group">
+                  <h3 className="panel-heading">{current.title}</h3>
+                  <p className="panel-lead-sub">{current.lead}</p>
+                </div>
+
+                <p className="panel-summary-text">{current.summary}</p>
+
+                {/* 4 Crisp Core Pillars */}
+                <div className="panel-pillars">
+                  {current.points.map((pt) => (
+                    <div key={pt} className="pillar-row">
+                      <span className="pillar-bullet" style={{ background: activeColor }} aria-hidden="true" />
+                      <span>{pt}</span>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Footer Action & Direct Link */}
+                <div className="panel-cta-row">
+                  {current.linkHref && (
+                    <Magnetic>
+                      <Link
+                        href={current.linkHref}
+                        className="btn btn-primary btn-sm"
+                      >
+                        {current.linkLabel} →
+                      </Link>
+                    </Magnetic>
+                  )}
+                  <span className="story-shortcut-hint">
+                    Use <kbd>←</kbd> <kbd>→</kbd> or <kbd>1-4</kbd> keys
+                  </span>
+                </div>
               </article>
-            ))}
+            </div>
           </div>
         </div>
       </div>

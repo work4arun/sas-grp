@@ -1,43 +1,89 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import Link from "next/link";
 import Reveal, { Lines, Words } from "./Reveal";
-import { PROGRAMMES, PG_PROGRAMMES, GOALS } from "@/lib/programmes";
+import { ALL_GROUP_PROGRAMMES, GOALS, PROGRAMMES } from "@/lib/programmes";
 import { DEPARTMENT_BY_PROGRAMME, DEPARTMENT_BY_SLUG } from "@/lib/departments";
 
-// A compact finder: pick what you want to do, see only the programmes that lead there. Every card links to its
-// department page (/departments/[slug]); the slug comes from lib/departments.js, not from here, so the two stay in step.
-
-const UG = PROGRAMMES.filter((p) => p.group !== "foundation").map((p) => {
-  const d = DEPARTMENT_BY_PROGRAMME[p.short];
-  return { ...p, slug: d.slug, since: d.since, credential: d.credential };
-});
-const PG = PG_PROGRAMMES.map((p) => {
-  const d = DEPARTMENT_BY_SLUG[p.slug];
-  return { ...p, since: d.since, credential: d.credential };
-});
-const ITEMS = [...UG, ...PG];
-const FOUNDATION = PROGRAMMES.find((p) => p.group === "foundation");
-const FOUNDATION_DEPT = DEPARTMENT_BY_PROGRAMME[FOUNDATION.short];
-
-const BY_GOAL = Object.fromEntries(GOALS.map((g) => [g.key, ITEMS.filter((p) => p.group === g.key)]));
-
-const STATS = [
-  { n: UG.length, label: "Undergraduate departments" },
-  { n: PG.length, label: "Postgraduate programmes" },
-  { n: 1, label: "Common first year" },
-];
-
-// "B.E. · four years" -> "Four years"; adds the founding year where the college states one.
-const duration = (p) => {
-  const part = (p.credential.split("·")[1] || "").trim();
-  const d = part ? part.charAt(0).toUpperCase() + part.slice(1) : "";
-  return [d, p.since ? `since ${p.since}` : ""].filter(Boolean).join(" · ");
+const ICONS = {
+  all: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <rect x="3" y="3" width="7" height="7" rx="1.5" />
+      <rect x="14" y="3" width="7" height="7" rx="1.5" />
+      <rect x="14" y="14" width="7" height="7" rx="1.5" />
+      <rect x="3" y="14" width="7" height="7" rx="1.5" />
+    </svg>
+  ),
+  engineering: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <rect x="4" y="4" width="16" height="16" rx="2" />
+      <rect x="9" y="9" width="6" height="6" />
+      <path d="M9 1v3M15 1v3M9 20v3M15 20v3M20 9h3M20 14h3M1 9h3M1 14h3" />
+    </svg>
+  ),
+  "computing-arts": (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <polyline points="16 18 22 12 16 6" />
+      <polyline points="8 6 2 12 8 18" />
+    </svg>
+  ),
+  "commerce-management": (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <line x1="12" y1="1" x2="12" y2="23" />
+      <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+    </svg>
+  ),
+  "healthcare-education": (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+    </svg>
+  ),
+  pg: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
+      <path d="M6 12v5c3 3 9 3 12 0v-5" />
+    </svg>
+  ),
 };
 
+const DOMAIN_TABS = [
+  { key: "all", short: "All Streams", color: "var(--ink)", rgb: "22, 20, 77" },
+  ...GOALS.map((g) => ({
+    key: g.key,
+    short: g.short,
+    color: g.color,
+    rgb: g.rgb,
+  })),
+];
+
+const ITEMS = ALL_GROUP_PROGRAMMES.map((p) => {
+  const dept = p.slug ? DEPARTMENT_BY_SLUG[p.slug] : (p.short ? DEPARTMENT_BY_PROGRAMME[p.short] : null);
+  const goalObj = GOALS.find((g) => g.key === p.group) || GOALS[0];
+  return {
+    ...p,
+    slug: dept?.slug || p.slug || null,
+    since: dept?.since || p.since || null,
+    color: goalObj.color,
+    rgb: goalObj.rgb,
+    campusLabel: p.campusLabel || (p.campus === "vjm" ? "Vijayamangalam" : "Vijayamangalam & CBE"),
+    yearsLabel: p.years || (p.duration ? p.duration.split("·")[0].trim() : "Degree"),
+  };
+});
+
+const FOUNDATION = PROGRAMMES.find((p) => p.group === "foundation");
+const FOUNDATION_DEPT = DEPARTMENT_BY_PROGRAMME[FOUNDATION?.short];
+
+const STATS = [
+  { n: ITEMS.length, label: "Programmes offered" },
+  { n: "92%", label: "Graduation rate", isText: true },
+  { n: "2,500+", label: "Students enrolled", isText: true },
+  { n: "12K+", label: "Top graduates", isText: true },
+  { n: "Autonomous", label: "Conferred by UGC & AU", isText: true },
+];
+
 const Arrow = () => (
-  <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
     <path d="M5 12h14M13 6l6 6-6 6" />
   </svg>
 );
@@ -50,115 +96,374 @@ const Chevrons = () => (
   </svg>
 );
 
-export default function Programmes() {
-  const [goal, setGoal] = useState(GOALS[0].key);
-  const g = GOALS.find((x) => x.key === goal);
-  const items = BY_GOAL[goal];
+export default function Programmes({
+  isStandalonePage = false,
+  initialShowAll = false,
+  headingEyebrow = "Programmes & Streams",
+  headingTitle = ["Choose the programme", "that fits your goals."],
+  headingLede = "Explore undergraduate and postgraduate degrees across Engineering, Computing, Arts, Commerce, Management, Healthcare and Education.",
+}) {
+  const [search, setSearch] = useState("");
+  const [domain, setDomain] = useState("all");
+  const [campus, setCampus] = useState("all");
+  const [level, setLevel] = useState("all");
+  const [showAll, setShowAll] = useState(initialShowAll);
+
+  const handleDomainChange = (key) => {
+    setDomain(key);
+    setShowAll(false);
+  };
+
+  const filteredItems = useMemo(() => {
+    const q = search.trim().toLowerCase();
+    return ITEMS.filter((p) => {
+      // 1. Search query
+      if (q) {
+        const matchName = p.name.toLowerCase().includes(q);
+        const matchShort = p.short ? p.short.toLowerCase().includes(q) : false;
+        const matchDegree = p.degree ? p.degree.toLowerCase().includes(q) : false;
+        const matchSubcat = p.subcat ? p.subcat.toLowerCase().includes(q) : false;
+        if (!matchName && !matchShort && !matchDegree && !matchSubcat) {
+          return false;
+        }
+      }
+
+      // 2. Academic Domain
+      if (domain !== "all" && p.group !== domain) {
+        return false;
+      }
+
+      // 3. Campus
+      if (campus !== "all") {
+        if (campus === "vjm" && p.campus !== "vjm" && p.campus !== "both") return false;
+        if (campus === "cbe" && p.campus !== "cbe" && p.campus !== "both") return false;
+      }
+
+      // 4. Degree Level
+      if (level !== "all") {
+        if (level === "ug" && p.level !== "ug") return false;
+        if (level === "pg" && p.level !== "pg") return false;
+      }
+
+      return true;
+    });
+  }, [search, domain, campus, level]);
+
+  const isDefaultView = domain === "all" && !search.trim() && campus === "all" && level === "all";
+
+  // By default, only show the 6 flagship programmes. If user chooses a filter or clicks "View all", show all matches.
+  const displayedItems = useMemo(() => {
+    if (isDefaultView && !showAll) {
+      return filteredItems.filter((p) => p.featured);
+    }
+    return filteredItems;
+  }, [filteredItems, isDefaultView, showAll]);
+
+  const hasActiveFilters = Boolean(search.trim() || domain !== "all" || campus !== "all" || level !== "all");
+
+  const handleResetFilters = () => {
+    setSearch("");
+    setDomain("all");
+    setCampus("all");
+    setLevel("all");
+    setShowAll(false);
+  };
+
+  const activeTab = DOMAIN_TABS.find((t) => t.key === domain) || DOMAIN_TABS[0];
 
   return (
     <section className="pf section" id="programmes">
-      <div className="pf-bar" aria-hidden="true" />
+      {/* Background Silver Ripples (matching the hero) */}
+      <div className="pf-ripples" aria-hidden="true">
+        <svg viewBox="-400 -60 800 280" preserveAspectRatio="none">
+          {[1, 2, 3, 4, 5, 6].map((k) => {
+            const apex = k * 34 - 40;
+            return (
+              <polyline
+                key={k}
+                className="ripple"
+                points={`-400,${apex + 240} 0,${apex} 400,${apex + 240}`}
+                style={{ "--i": k, "--o": (0.6 - k * 0.08).toFixed(2) }}
+              />
+            );
+          })}
+        </svg>
+      </div>
       <div className="container">
+        {/* Simple & Clean Header */}
         <div className="pf-head">
           <div className="pf-title">
             <p className="pf-eyebrow">
               <Chevrons />
-              Programmes
+              {headingEyebrow}
             </p>
-            <Lines lines={["Choose the programme", "that fits your goals."]} />
+            <Lines lines={headingTitle} />
             <Words
               className="lede"
               delay={0.2}
-              text="Eight B.E. and B.Tech. departments, a common first year, and two postgraduate programmes. Start with what you want to do."
+              text={headingLede}
             />
           </div>
           <dl className="pf-stats">
             {STATS.map((s) => (
               <div key={s.label}>
                 <dt>{s.label}</dt>
-                <dd>{String(s.n).padStart(2, "0")}</dd>
+                <dd>{s.isText ? s.n : String(s.n).padStart(2, "0")}</dd>
               </div>
             ))}
           </dl>
         </div>
 
         <Reveal className="pf-finder">
-          <div className="pf-goals" role="group" aria-label="I want to…">
-            <p className="pf-goals-label">I want to…</p>
-            {GOALS.map((x) => (
-              <button
-                key={x.key}
-                type="button"
-                className="pf-goal"
-                aria-pressed={goal === x.key}
-                onClick={() => setGoal(x.key)}
-                style={{ "--c": x.color, "--rgb": x.rgb }}
-              >
-                <i aria-hidden="true" />
-                <b>{x.label}</b>
-                <em>{BY_GOAL[x.key].length}</em>
-                <small>{BY_GOAL[x.key].map((p) => p.short).join(" · ")}</small>
-              </button>
-            ))}
+          {/* Stream Segmented Navigation Tabs */}
+          <div className="pf-domain-nav" role="tablist" aria-label="Academic streams">
+            {DOMAIN_TABS.map((tab) => {
+              const count = tab.key === "all" ? ITEMS.length : ITEMS.filter((p) => p.group === tab.key).length;
+              const isSelected = domain === tab.key;
+              return (
+                <button
+                  key={tab.key}
+                  type="button"
+                  className="pf-domain-tab"
+                  role="tab"
+                  aria-selected={isSelected}
+                  onClick={() => handleDomainChange(tab.key)}
+                  style={{ "--c": tab.color, "--rgb": tab.rgb }}
+                >
+                  <span className="pf-domain-tab-icon" aria-hidden="true">
+                    {ICONS[tab.key]}
+                  </span>
+                  <div className="pf-domain-tab-info">
+                    <span className="pf-domain-tab-name">{tab.short}</span>
+                    <span className="pf-domain-tab-count">{count} {count === 1 ? "course" : "courses"}</span>
+                  </div>
+                </button>
+              );
+            })}
           </div>
 
-          <div className="pf-panel" key={goal} style={{ "--c": g.color, "--rgb": g.rgb }} aria-live="polite">
-            <header className="pf-panel-head">
-              <h3>{g.short}</h3>
-              <p>{g.blurb}</p>
-            </header>
-            <ul className={`pf-grid${items.length < 3 ? " is-wide" : ""}`}>
-              {items.map((p, i) => (
-                <li key={p.slug} className="pf-item" style={{ "--i": i }}>
-                  <article className="pf-card">
-                    <div className="pf-main">
-                      <div className="pf-card-top">
-                        <span className="pf-degree">{p.degree}</span>
-                        <span className="pf-goal-tag">{duration(p)}</span>
-                      </div>
-                      <h4 className="pf-name">
-                        <Link href={`/departments/${p.slug}`} className="pf-link">
-                          {p.name}
-                        </Link>
-                      </h4>
-                      <p className="pf-line">{p.line}</p>
-                    </div>
-                    <div className="pf-side">
-                      <ul className="pf-tags">
-                        {p.tags.slice(0, 3).map((t) => (
-                          <li key={t}>{t}</li>
-                        ))}
-                      </ul>
-                      <span className="pf-go" aria-hidden="true">
-                        <Arrow />
-                      </span>
-                    </div>
-                  </article>
-                </li>
-              ))}
-            </ul>
+          {/* Simple, Compact Filter Bar */}
+          <div className="pf-toolbar">
+            {/* Search Input */}
+            <div className="pf-search-wrap">
+              <span className="pf-search-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="11" cy="11" r="8" />
+                  <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                </svg>
+              </span>
+              <input
+                type="text"
+                className="pf-search-input"
+                placeholder="Search courses (e.g. AI, Cyber, FinTech, MBA, Nursing)..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                aria-label="Search programmes"
+              />
+              {search && (
+                <button type="button" className="pf-search-clear" onClick={() => setSearch("")} aria-label="Clear search">
+                  ✕
+                </button>
+              )}
+            </div>
+
+            {/* Quick Filters */}
+            <div className="pf-filter-group">
+              <div className="pf-campus-toggles" role="group" aria-label="Campus filter">
+                <span className="pf-campus-label">Campus:</span>
+                <button type="button" className="pf-campus-btn" aria-pressed={campus === "all"} onClick={() => setCampus("all")}>
+                  All
+                </button>
+                <button type="button" className="pf-campus-btn" aria-pressed={campus === "vjm"} onClick={() => setCampus("vjm")}>
+                  Vijayamangalam
+                </button>
+                <button type="button" className="pf-campus-btn" aria-pressed={campus === "cbe"} onClick={() => setCampus("cbe")}>
+                  Coimbatore
+                </button>
+              </div>
+
+              <div className="pf-campus-toggles" role="group" aria-label="Level filter">
+                <span className="pf-campus-label">Level:</span>
+                <button type="button" className="pf-campus-btn" aria-pressed={level === "all"} onClick={() => setLevel("all")}>
+                  All
+                </button>
+                <button type="button" className="pf-campus-btn" aria-pressed={level === "ug"} onClick={() => setLevel("ug")}>
+                  UG
+                </button>
+                <button type="button" className="pf-campus-btn" aria-pressed={level === "pg"} onClick={() => setLevel("pg")}>
+                  PG
+                </button>
+              </div>
+
+              {hasActiveFilters && (
+                <button type="button" className="pf-results-clear" onClick={handleResetFilters}>
+                  Reset ✕
+                </button>
+              )}
+            </div>
           </div>
+
+          {/* Filter Status / Featured Note Bar */}
+          {isDefaultView ? (
+            <div className="pf-status-bar">
+              <div className="pf-status-info">
+                <span className="fact-beacon" aria-hidden="true" style={{ "--c": "var(--red)", "--rgb": "224, 31, 38" }} />
+                <span>
+                  {showAll ? (
+                    <>Showing <b>all {displayedItems.length} programmes</b> across both campuses</>
+                  ) : (
+                    <>Showing <b>6 flagship programmes</b> · Select a stream above or expand below</>
+                  )}
+                </span>
+              </div>
+              <button
+                type="button"
+                className="pf-toggle-all-link"
+                onClick={() => setShowAll((prev) => !prev)}
+              >
+                {showAll ? "Show featured only (6)" : `View all ${ITEMS.length} programmes →`}
+              </button>
+            </div>
+          ) : (
+            <div className="pf-status-bar">
+              <div className="pf-status-info">
+                <span className="fact-beacon" aria-hidden="true" style={{ "--c": activeTab.color, "--rgb": activeTab.rgb }} />
+                <span>
+                  Showing <b>{displayedItems.length} programmes</b>
+                  {domain !== "all" && <> in <b>{activeTab.short}</b></>}
+                  {campus !== "all" && <> at <b>{campus === "vjm" ? "Vijayamangalam" : "Coimbatore"}</b></>}
+                  {level !== "all" && <> (<b>{level.toUpperCase()}</b>)</>}
+                  {search.trim() && <> matching &ldquo;<b>{search.trim()}</b>&rdquo;</>}
+                </span>
+              </div>
+              <button type="button" className="pf-results-clear" onClick={handleResetFilters}>
+                Show all streams ✕
+              </button>
+            </div>
+          )}
+
+          {/* Compact Course Grid */}
+          {displayedItems.length > 0 ? (
+            <>
+              <ul className="pf-grid pf-grid-compact">
+                {displayedItems.map((p, i) => {
+                  const targetHref = p.slug ? `/departments/${p.slug}` : (p.href || "/admissions");
+                  return (
+                    <li key={p.slug || p.short || p.name} className="pf-item" style={{ "--c": p.color, "--rgb": p.rgb, "--i": i }}>
+                      <article className="pf-card pf-card-compact">
+                        {/* Top Row: Degree & Duration */}
+                        <div className="pf-card-top">
+                          <span className="pf-degree">
+                            <span className="fact-beacon" aria-hidden="true" style={{ "--c": p.color, "--rgb": p.rgb }} />
+                            {p.degree}
+                          </span>
+                          <span className="pf-goal-tag">{p.yearsLabel}</span>
+                        </div>
+
+                        {/* Course Name */}
+                        <h4 className="pf-name">
+                          <Link href={targetHref} className="pf-link">
+                            {p.name}
+                          </Link>
+                        </h4>
+
+                        {/* Bottom Row: Campus & Arrow */}
+                        <div className="pf-card-foot">
+                          <span className="pf-campus-tag">
+                            <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                              <circle cx="12" cy="10" r="3" />
+                            </svg>
+                            {p.campusLabel}
+                          </span>
+                          <span className="pf-go" aria-hidden="true">
+                            <Arrow />
+                          </span>
+                        </div>
+                      </article>
+                    </li>
+                  );
+                })}
+              </ul>
+
+              {/* Expand / Collapse Action for Default State */}
+              {isDefaultView && (
+                <div className="pf-expand-row">
+                  <p className="pf-expand-prompt">
+                    {showAll ? (
+                      <>Viewing the complete catalogue of <b>{ITEMS.length} programmes</b> across Engineering, Arts &amp; Science, Management, Healthcare, and Postgraduate studies.</>
+                    ) : (
+                      <>Looking for a specific degree or stream? Select a faculty above or view the full catalogue of <b>{ITEMS.length} programmes</b>.</>
+                    )}
+                  </p>
+                  <button
+                    type="button"
+                    className="pf-expand-btn"
+                    onClick={() => setShowAll((prev) => !prev)}
+                  >
+                    {showAll ? (
+                      <>
+                        Collapse to featured programmes (6)
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                          <path d="M18 15l-6-6-6 6" />
+                        </svg>
+                      </>
+                    ) : (
+                      <>
+                        View all {ITEMS.length} programmes
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                          <path d="M6 9l6 6 6-6" />
+                        </svg>
+                      </>
+                    )}
+                  </button>
+                </div>
+              )}
+            </>
+          ) : (
+            <div className="pf-empty">
+              <h4>No courses found</h4>
+              <p>No programmes match your current search or filter combination.</p>
+              <button type="button" className="pf-empty-reset" onClick={handleResetFilters}>
+                Show all {ITEMS.length} programmes
+              </button>
+            </div>
+          )}
         </Reveal>
 
+        {/* Foundation & Compare CTA Row */}
         <div className="pf-foot-row">
-          <Link className="pf-found" href={`/departments/${FOUNDATION_DEPT.slug}`}>
+          <Link className="pf-found" href={`/departments/${FOUNDATION_DEPT?.slug || "science-and-humanities"}`}>
             <span className="pf-found-tag">
               <Chevrons />
-              Every branch starts here
+              First Year Foundation
             </span>
-            <b>{FOUNDATION.name}</b>
-            <span className="pf-found-text">{FOUNDATION.line}</span>
+            <b>{FOUNDATION?.name || "Science and Humanities"}</b>
+            <span className="pf-found-text">{FOUNDATION?.line || "The common first year foundation for engineering branches across our group."}</span>
             <span className="pf-found-go" aria-hidden="true">
               <Arrow />
             </span>
           </Link>
           <div className="cta-row">
-            <Link className="btn btn-primary" href="/departments">
-              Compare all departments
-            </Link>
-            <Link className="btn pf-ghost" href="/admissions">
-              Admissions and eligibility
-            </Link>
+            {isStandalonePage ? (
+              <>
+                <Link className="btn btn-primary" href="/admissions">
+                  Admissions and eligibility
+                </Link>
+                <Link className="btn pf-ghost" href="/placements">
+                  Placements &amp; recruiters
+                </Link>
+              </>
+            ) : (
+              <>
+                <Link className="btn btn-primary" href="/departments">
+                  Compare all departments
+                </Link>
+                <Link className="btn pf-ghost" href="/admissions">
+                  Admissions and eligibility
+                </Link>
+              </>
+            )}
           </div>
         </div>
       </div>

@@ -18,9 +18,9 @@ import {
 } from "@/lib/documents";
 
 export const metadata = {
-  title: "Disclosures and documents | Sasurie College of Engineering",
+  title: "Disclosures and documents | Sasurie Group of Institutions",
   description:
-    "NAAC documents, NIRF submissions, AQAR reports, AICTE extensions of approval year by year, IQAC, examinations, statutory committees, policies and circulars published by Sasurie College of Engineering.",
+    "NAAC documents, NIRF submissions, AQAR reports, AICTE approvals, IQAC, examinations, statutory committees, policies and mandatory circulars across Sasurie Group of Institutions.",
 };
 
 const wrap = { display: "grid", gap: "clamp(32px, 5vw, 64px)", marginTop: "clamp(24px, 4vw, 48px)" };

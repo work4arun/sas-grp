@@ -5,9 +5,9 @@ import Reveal, { Lines, Words } from "@/components/Reveal";
 import { FACILITIES } from "@/lib/site";
 
 export const metadata = {
-  title: "Facilities | Sasurie College of Engineering",
+  title: "Facilities | Sasurie Group of Institutions",
   description:
-    "Campus facilities at Sasurie College of Engineering: a central library with DELNET access, hostels, 12 GPS buses, a 600-seat canteen, dispensary and ambulance, 24-hour ATM, sports ground and gym, incubation centre and R&D cell.",
+    "Campus facilities across Sasurie Group of Institutions: Central Library, CFRD research cell, Incubation Centre, hostels, sports arenas, GPS fleet and modern laboratories across Tamil Nadu.",
 };
 
 const LIBRARY_COLLECTION = [
@@ -82,7 +82,7 @@ export default function FacilitiesPage() {
             <Words
               className="lede"
               delay={0.2}
-              text="Academic, residential and support facilities across a 10.61-acre campus: library, hostels, transport, canteen, healthcare, sports, laboratories and innovation centres."
+              text="Academic, residential and support facilities across our Vijayamangalam and Coimbatore campuses: central libraries, research cells, hostels, transport fleets, healthcare, sports arenas and innovation laboratories."
             />
           </div>
         </div>
