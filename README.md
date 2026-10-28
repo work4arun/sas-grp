@@ -99,3 +99,6 @@ Claims that were on the old site as template filler (counters reading 0, "Establ
 - **`components/Family.jsx`**: the Coimbatore Arts & Science link is a temporary Hostinger URL, "Nursing and Research" points at the Education page, "Pharmacy and Research" repeats the Vijayamangalam URL, and Business School and Academy of Engineering reuse other institutions' logos.
 - **Removed dead links** (404 on 28 Oct 2026): the 2022-23 annual accounts PDF, the IPR Cell PDF and 13 NAAC DVV files. Re-add them in `lib/documents.js` when they are re-published.
 - The ambient video is now `public/sasori-lite.mp4` (3.7 MB, with a poster); the 11 MB original `public/sasori.mp4` is unused and can be deleted.
+
+## Silver Jubilee launch page (`/jubilee`)
+Full-screen event page, not linked from the site and set to `noindex`. Open `/jubilee` on the projector, press **Launch** (or Space); the curtains part, the 25-year count-up, the four-layer build and fireworks play, and the page lands on the home page by itself (about 19 s). Presenter keys: **F** full screen, **R** replay, **→** skip to the finale. Wording lives in the `CONFIG` block at the top of `components/Jubilee.jsx`. With reduced motion on, Launch goes straight to the home page.
