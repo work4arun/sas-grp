@@ -1,10 +1,11 @@
 import { DEPARTMENTS } from "@/lib/departments";
+import { SITE_URL } from "@/lib/siteUrl";
 
 // Served at /sitemap.xml. Extend this array when more routes are added.
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://sasurieengg.com";
 
 const ROUTES = [
   { path: "/", priority: 1, changeFrequency: "weekly" },
+  { path: "/blueprint", priority: 0.6, changeFrequency: "monthly" },
   { path: "/about", priority: 0.8, changeFrequency: "monthly" },
   { path: "/departments", priority: 0.8, changeFrequency: "monthly" },
   { path: "/happenings", priority: 0.6, changeFrequency: "monthly" },

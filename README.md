@@ -1,6 +1,6 @@
 # Sasurie Group of Institutions: website
 
-Next.js 16.4.2 (App Router) · React 19 · no UI libraries, fonts bundled locally.
+Next.js 16.4.2 (App Router) · React 19 · no UI libraries. Fonts (Plus Jakarta Sans, Inter) are fetched from Google at build time and self-hosted; the hero headline font is a local file.
 
 ```bash
 npm install
@@ -26,6 +26,7 @@ look is unchanged. Each one is content transferred from the college's existing s
 | `/facilities` | library, hostels, 12 buses, canteen, dispensary and ambulance, ATM, sports and gym, seminar halls, incubation centre, R&D cell, Wi-Fi and power, accessibility |
 | `/placements` | the DPCD office, its objectives and what it runs; recruiter contact |
 | `/admissions` | TNEA and TANCET routes, UG and PG eligibility, scholarships (STE, sports, differently-abled, single parent), refund policy |
+| `/blueprint` | "The Sasurie Blueprint": the four layers as a standalone page (`/leadership` redirects here) |
 | `/disclosures` | NAAC (with DVV files), NIRF, AQAR, AICTE EOA for every year since 2001, IQAC, examinations, statutory committees, policies, circulars, accounts, committees and cells |
 | `/contact` | phone numbers, emails, address, map link, department inboxes, online services and the call-back form |
 
@@ -60,9 +61,9 @@ look is unchanged. Each one is content transferred from the college's existing s
 
 | variable | what it does |
 |---|---|
-| `NEXT_PUBLIC_SITE_URL` | canonical origin used by metadata, `robots.txt` and `sitemap.xml` (defaults to `https://sasurieengg.com`) |
+| `NEXT_PUBLIC_SITE_URL` | canonical origin used by metadata, `robots.txt` and `sitemap.xml` (defaults to `https://sasurie.com`, set once in `lib/siteUrl.js`). Every page sets its own canonical URL in its `metadata` |
 | `NEXT_PUBLIC_ADMISSION_ENDPOINT` | URL that accepts a JSON `POST` for call-back requests (form relay, CRM webhook, Apps Script). If it is unset or fails, the form hands the details to the admissions desk on WhatsApp instead |
-| `NEXT_PUBLIC_ADMISSION_WHATSAPP` | WhatsApp number for that hand-off (defaults to `919488891111`, the college's admissions line) |
+| `NEXT_PUBLIC_ADMISSION_WHATSAPP` | WhatsApp number for that hand-off (defaults to `919442593828`, an admissions line) |
 
 ## Content: where every fact comes from
 
@@ -90,3 +91,11 @@ Spot-check before publishing:
 - The old site's own pages conflict in places. Open items to confirm with the college: library book count (46,468 in text vs 46,901 in its table; this site says "more than 46,000"), the IQAC and R&D Cell pages still naming a former Principal as chair, Civil's establishment year ("2011, along with the institute"), four departments listing the identical nine laboratories, and the AI and DS inbox being `scesh@`.
 
 Claims that were on the old site as template filler (counters reading 0, "Established since 1900", "45 years", "2.4 million graduates") were deliberately left out; the figures above are the ones the college publishes.
+
+### Review follow-ups (28 Oct 2026)
+- **Figures still to confirm with the college.** The hero facts, `/placements`, `/about` and the Blueprint panels show 93.12% placement, 92%, 12,000+ alumni, 2,500+ students, 150+ recruiters and 25+ awards. The notes above say the college published none of these placement percentages. Keep only figures with a published source and year; the numbers also disagree across components (92% is a "graduation rate" in one place and a "placement rate" in another).
+- **Establishment years** disagree between `lib/departments.js` and `lib/programmes.js` (Cyber Security 2021/2023, Mechanical 2003/2005); only CSE/IT 2001 and EEE 2002 are stated by the college.
+- **MBA specialisations** differ between `lib/departments.js`, `lib/programmes.js` and `lib/site.js`.
+- **`components/Family.jsx`**: the Coimbatore Arts & Science link is a temporary Hostinger URL, "Nursing and Research" points at the Education page, "Pharmacy and Research" repeats the Vijayamangalam URL, and Business School and Academy of Engineering reuse other institutions' logos.
+- **Removed dead links** (404 on 28 Oct 2026): the 2022-23 annual accounts PDF, the IPR Cell PDF and 13 NAAC DVV files. Re-add them in `lib/documents.js` when they are re-published.
+- The ambient video is now `public/sasori-lite.mp4` (3.7 MB, with a poster); the 11 MB original `public/sasori.mp4` is unused and can be deleted.

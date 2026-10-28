@@ -1,3 +1,4 @@
+import Link from "next/link";
 import PageShell from "@/components/PageShell";
 import FactCards from "@/components/FactCards";
 import PointList from "@/components/PointList";
@@ -5,10 +6,13 @@ import Reveal, { Lines, Words } from "@/components/Reveal";
 import { ADMISSION, SITE } from "@/lib/site";
 
 export const metadata = {
+  alternates: { canonical: "/admissions" },
   title: "Admissions | Sasurie Group of Institutions",
   description:
     "Admissions at Sasurie Group of Institutions: Engineering, Arts & Science, Management, Pharmacy, Nursing, and Education. Merit scholarships up to 100% fee waiver, sports quota, and application details.",
 };
+
+const sentence = (t) => t.replace(/\.+$/, "") + ".";
 
 export default function AdmissionsPage() {
   return (
@@ -44,7 +48,7 @@ export default function AdmissionsPage() {
             <a className="btn btn-primary" href={SITE.applyUrl} target="_blank" rel="noreferrer">
               Apply online ↗
             </a>
-            <a className="btn btn-ghost" href="tel:9442593828">Call 94425 93828</a>
+            <a className="btn btn-ghost" href="tel:+919442593828">Call 94425 93828</a>
             <a className="btn btn-ghost" href={ADMISSION.brochureUrl} target="_blank" rel="noreferrer">Admission brochure ↗</a>
           </div>
         </div>
@@ -66,7 +70,7 @@ export default function AdmissionsPage() {
           items={ADMISSION.ugEligibility.map((r, i) => ({
             tag: r.category,
             title: r.category,
-            text: `Higher Secondary (Classes 11 and 12): ${r.hsc}. Three-year diploma: minimum ${r.diploma}.`,
+            text: [sentence(r.hsc), /lateral/i.test(r.diploma) ? sentence(r.diploma) : null].filter(Boolean).join(" "),
             color: ["var(--green)", "var(--blue)", "var(--gold)", "var(--red)"][i % 4],
           }))}
         />
@@ -141,8 +145,8 @@ export default function AdmissionsPage() {
             />
           </div>
           <div className="cta-row">
-            <a className="btn btn-primary" href="/contact">Contact and call-back</a>
-            <a className="btn btn-ghost" href="/disclosures">Policies and documents</a>
+            <Link className="btn btn-primary" href="/contact">Contact and call-back</Link>
+            <Link className="btn btn-ghost" href="/disclosures">Policies and documents</Link>
           </div>
         </div>
       </section>

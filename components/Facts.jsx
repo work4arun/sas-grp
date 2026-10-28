@@ -21,7 +21,7 @@ const facts = [
     color: "#000000",
     rgb: "0, 0, 0",
     glow: "rgba(0, 0, 0, 0.05)",
-    text: "High academic success with timely graduation, 150+ recruiting partners, and highest CTC of ₹48 LPA.",
+    text: "High academic success with timely graduation, and 150+ recruiting partners.",
   },
   {
     title: "2,500+ Students",

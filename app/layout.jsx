@@ -1,5 +1,6 @@
 import { Plus_Jakarta_Sans, Inter } from "next/font/google";
 import "./globals.css";
+import { SITE_URL } from "@/lib/siteUrl";
 
 // Display / Headings: Plus Jakarta Sans (sharp, authoritative, modern engineering & university feel)
 const plusJakarta = Plus_Jakarta_Sans({
@@ -17,7 +18,6 @@ const inter = Inter({
   display: "swap",
 });
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://sasurie.com";
 
 export const metadata = {
   metadataBase: new URL(SITE_URL),
@@ -37,10 +37,8 @@ export const metadata = {
     "Coimbatore",
     "Tiruppur",
   ],
-  alternates: { canonical: "/" },
   openGraph: {
     type: "website",
-    url: "/",
     siteName: "Sasurie Group of Institutions",
     title: "Sasurie Group of Institutions | Best Educational Institutions in Tamil Nadu",
     description:
@@ -49,7 +47,7 @@ export const metadata = {
       {
         url: "/brand/sasurie-og.png",
         width: 1200,
-        height: 265,
+        height: 345,
         alt: "Sasurie Group of Institutions",
       },
     ],
@@ -69,9 +67,10 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" data-scroll-behavior="smooth" className={`${plusJakarta.variable} ${inter.variable}`}>
       <body>
+        <a className="skip-link" href="#main">Skip to content</a>
         <script
           dangerouslySetInnerHTML={{
-            __html: "try{if('scrollRestoration' in history)history.scrollRestoration='manual';if(location.hash)history.replaceState(null,'',location.pathname+location.search);window.scrollTo(0,0);}catch(e){}",
+            __html: "try{if('scrollRestoration' in history)history.scrollRestoration='manual';if(location.hash&&!/^#(foundation|competency|exposure|enterprise)$/.test(location.hash))history.replaceState(null,'',location.pathname+location.search);window.scrollTo(0,0);}catch(e){}",
           }}
         />
         <noscript>

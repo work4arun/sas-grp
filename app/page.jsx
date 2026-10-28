@@ -14,6 +14,8 @@ import CornerArrow from "@/components/CornerArrow";
 import Drift from "@/components/Drift";
 import { EXPLORE_LANDING } from "@/lib/site";
 
+export const metadata = { alternates: { canonical: "/" } };
+
 export default function Page() {
   return (
     <>
@@ -23,7 +25,7 @@ export default function Page() {
       <CornerArrow />
       <Drift />
       <Nav />
-      <main>
+      <main id="main">
         <Hero />
         <Marquee />
         <Story />

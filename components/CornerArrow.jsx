@@ -27,10 +27,12 @@ export default function CornerArrow() {
     return () => ios.forEach((io) => io.disconnect());
   }, []);
 
-  // same spring-and-hop as the hero, without the cursor and scroll effects
+  const on = away && !atEnd;
+
+  // same spring-and-hop as the hero, without the cursor and scroll effects; the loop only runs while the arrow shows
   useEffect(() => {
     const el = root.current;
-    if (!el) return;
+    if (!el || !on) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const byLevel = [];
     el.querySelectorAll(".tw-par").forEach((n) => (byLevel[Number(n.dataset.level)] = n));
@@ -61,10 +63,10 @@ export default function CornerArrow() {
     };
     raf = requestAnimationFrame(step);
     return () => cancelAnimationFrame(raf);
-  }, []);
+  }, [on]);
 
   return (
-    <a ref={root} href="#top" className={`corner-arrow${away && !atEnd ? " is-on" : ""}`} aria-label="Back to the top" tabIndex={away && !atEnd ? 0 : -1}>
+    <a ref={root} href="#top" className={`corner-arrow${on ? " is-on" : ""}`} aria-label="Back to the top" tabIndex={on ? 0 : -1}>
       <svg className="corner-svg" viewBox="-175 -45 350 310" aria-hidden="true">
         <TowerLayers />
       </svg>

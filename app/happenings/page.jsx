@@ -1,3 +1,4 @@
+import Link from "next/link";
 import PageShell from "@/components/PageShell";
 import Happenings from "@/components/Happenings";
 import Reveal, { Lines, Words } from "@/components/Reveal";
@@ -90,8 +91,8 @@ export default function HappeningsPage() {
           </div>
 
           <div className="cta-row hp-cta">
-            <a className="btn btn-primary" href="/life">See life at SAS</a>
-            <a className="btn btn-ghost" href="/admissions">Join the next one: admissions</a>
+            <Link className="btn btn-primary" href="/life">See life at SAS</Link>
+            <Link className="btn btn-ghost" href="/admissions">Join the next one: admissions</Link>
             {youtube && <a className="btn btn-ghost" href={youtube.href} target="_blank" rel="noreferrer">Watch on YouTube</a>}
             {instagram && <a className="btn btn-ghost" href={instagram.href} target="_blank" rel="noreferrer">Follow on Instagram</a>}
           </div>

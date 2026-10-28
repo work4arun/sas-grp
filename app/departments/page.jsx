@@ -1,3 +1,4 @@
+import Link from "next/link";
 import PageShell from "@/components/PageShell";
 import FactCards from "@/components/FactCards";
 import PointList from "@/components/PointList";
@@ -6,6 +7,7 @@ import Programmes from "@/components/Programmes";
 import { DEPARTMENT_BY_SLUG } from "@/lib/departments";
 
 export const metadata = {
+  alternates: { canonical: "/departments" },
   title: "Academic Programmes & Departments | Sasurie Group of Institutions",
   description:
     "Explore 37+ academic programmes across Engineering, Computing, Arts, Commerce, Management, Healthcare, and Postgraduate studies with state-of-the-art laboratories and autonomous curriculum.",
@@ -140,8 +142,8 @@ export default function DepartmentsPage() {
             </Reveal>
           </div>
           <div className="cta-row" style={{ marginTop: "clamp(36px, 5vw, 60px)" }}>
-            <a className="btn btn-primary" href="/admissions">Admissions and eligibility</a>
-            <a className="btn btn-ghost" href="/placements">Placements</a>
+            <Link className="btn btn-primary" href="/admissions">Admissions and eligibility</Link>
+            <Link className="btn btn-ghost" href="/placements">Placements</Link>
           </div>
         </div>
       </section>

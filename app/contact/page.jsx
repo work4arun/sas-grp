@@ -6,6 +6,7 @@ import { Lines, Words } from "@/components/Reveal";
 import { DEPARTMENT_CONTACTS, SITE } from "@/lib/site";
 
 export const metadata = {
+  alternates: { canonical: "/contact" },
   title: "Contact | Sasurie Group of Institutions",
   description:
     "Sasurie Group of Institutions — Vijayamangalam Campus (NH544, Tiruppur) & Coimbatore Campus. Call 94425 93828, 94888 93333, or write to info@sasurie.com.",

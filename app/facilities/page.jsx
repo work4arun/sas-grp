@@ -1,3 +1,4 @@
+import Link from "next/link";
 import PageShell from "@/components/PageShell";
 import FactCards from "@/components/FactCards";
 import PointList from "@/components/PointList";
@@ -5,6 +6,7 @@ import Reveal, { Lines, Words } from "@/components/Reveal";
 import { FACILITIES } from "@/lib/site";
 
 export const metadata = {
+  alternates: { canonical: "/facilities" },
   title: "Facilities | Sasurie Group of Institutions",
   description:
     "Campus facilities across Sasurie Group of Institutions: Central Library, CFRD research cell, Incubation Centre, hostels, sports arenas, GPS fleet and modern laboratories across Tamil Nadu.",
@@ -188,8 +190,8 @@ export default function FacilitiesPage() {
             </Reveal>
           </div>
           <div className="cta-row" style={{ marginTop: "clamp(40px, 6vw, 72px)" }}>
-            <a className="btn btn-primary" href="/admissions">Admissions</a>
-            <a className="btn btn-ghost" href="/contact">Plan a visit</a>
+            <Link className="btn btn-primary" href="/admissions">Admissions</Link>
+            <Link className="btn btn-ghost" href="/contact">Plan a visit</Link>
           </div>
         </div>
       </section>

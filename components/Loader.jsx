@@ -15,7 +15,12 @@ export default function Loader() {
       window.dispatchEvent(new Event("sas:loaded"));
       window.scrollTo(0, 0);
     };
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    let seen = false;
+    try {
+      seen = sessionStorage.getItem("sas-intro") === "1";
+      sessionStorage.setItem("sas-intro", "1");
+    } catch {}
+    if (seen || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       setPhase("gone");
       done();
       return;

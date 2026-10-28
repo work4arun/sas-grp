@@ -38,8 +38,9 @@ export default function Footer({ exploreLinks = EXPLORE, homeHref = "#top" }) {
           <a href="https://admissions.sasurie.com/?utm_source=google&utm_medium=online&utm_campaign=website%20" target="_blank" rel="noreferrer">Apply online ↗</a>
           <a href="https://formbuilder.ccavenue.com/live/sasurie-college-of-engineering" target="_blank" rel="noreferrer">Fee Payment (CCAvenue) ↗</a>
           <a href="https://sasurieengg.com/wp-content/uploads/2025/11/Flyer-college.pdf" target="_blank" rel="noreferrer">Admission Brochure (PDF) ↗</a>
-          <a href="tel:9488891111">Call 94888 91111</a>
-          <a href="tel:9488892222">Call 94888 92222</a>
+          <a href="tel:+919488891111">Call 94888 91111</a>
+          <a href="tel:+919488892222">Call 94888 92222</a>
+          <a href="tel:+919442593828">Call 94425 93828</a>
           <a href="mailto:info@sasurie.com">info@sasurie.com</a>
           <a href="https://www.instagram.com/sasurieinstitution/" target="_blank" rel="noreferrer">Instagram ↗</a>
           <a href="https://www.facebook.com/sasurieinstitution" target="_blank" rel="noreferrer">Facebook ↗</a>

@@ -1,3 +1,4 @@
+import Link from "next/link";
 import PageShell from "@/components/PageShell";
 import FactCards from "@/components/FactCards";
 import PointList from "@/components/PointList";
@@ -18,6 +19,7 @@ import {
 } from "@/lib/documents";
 
 export const metadata = {
+  alternates: { canonical: "/disclosures" },
   title: "Disclosures and documents | Sasurie Group of Institutions",
   description:
     "NAAC documents, NIRF submissions, AQAR reports, AICTE approvals, IQAC, examinations, statutory committees, policies and mandatory circulars across Sasurie Group of Institutions.",
@@ -173,7 +175,7 @@ export default function DisclosuresPage() {
               <PointList items={POLICIES} />
             </Reveal>
             <Links title="Circulars" links={CIRCULARS} />
-            <Links title="Annual accounts" links={ANNUAL_ACCOUNTS} />
+            {ANNUAL_ACCOUNTS.length > 0 && <Links title="Annual accounts" links={ANNUAL_ACCOUNTS} />}
           </div>
         </div>
       </section>
@@ -192,8 +194,8 @@ export default function DisclosuresPage() {
             <Links links={COMMITTEES} />
           </div>
           <div className="cta-row" style={{ marginTop: "clamp(40px, 6vw, 72px)" }}>
-            <a className="btn btn-primary" href="/admissions">Admissions</a>
-            <a className="btn btn-ghost" href="/contact">Contact the office</a>
+            <Link className="btn btn-primary" href="/admissions">Admissions</Link>
+            <Link className="btn btn-ghost" href="/contact">Contact the office</Link>
           </div>
         </div>
       </section>

@@ -1,3 +1,4 @@
+import Link from "next/link";
 import Image from "next/image";
 import PageShell from "@/components/PageShell";
 import LifeGallery from "@/components/LifeGallery";
@@ -60,7 +61,7 @@ export default function LifePage() {
             ))}
           </ol>
           <div className="cta-row">
-            <a className="btn btn-ghost" href="/facilities">All facilities</a>
+            <Link className="btn btn-ghost" href="/facilities">All facilities</Link>
           </div>
         </div>
       </section>
@@ -104,9 +105,9 @@ export default function LifePage() {
               <p>The campus is on the Coimbatore Bypass (NH544) at Vijayamangalam, Tiruppur district. Call the admissions desk to arrange a visit.</p>
             </div>
             <div className="cta-row">
-              <a className="btn btn-primary" href="/contact">Plan a visit</a>
-              <a className="btn pf-ghost" href="/happenings">Happenings at SAS</a>
-              <a className="btn pf-ghost" href="/admissions">Admissions</a>
+              <Link className="btn btn-primary" href="/contact">Plan a visit</Link>
+              <Link className="btn pf-ghost" href="/happenings">Happenings at SAS</Link>
+              <Link className="btn pf-ghost" href="/admissions">Admissions</Link>
             </div>
           </div>
         </div>

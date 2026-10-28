@@ -1,3 +1,4 @@
+import Link from "next/link";
 import Nav from "./Nav";
 import Footer from "./Footer";
 import ScrollProgress from "./ScrollProgress";
@@ -18,9 +19,9 @@ export default function PageShell({ children, explore = EXPLORE_LANDING }) {
       <CornerArrow />
       <Nav logoHref="/" ctaHref="/admissions" />
       <div className="container" style={{ position: "absolute", top: "calc(var(--nav) + 44px)", left: 0, right: 0, zIndex: 5 }}>
-        <a className="to-top" href="/">← Back to home</a>
+        <Link className="to-top" href="/">← Back to home</Link>
       </div>
-      <main>{children}</main>
+      <main id="main">{children}</main>
       <Footer exploreLinks={explore} homeHref="/" />
     </>
   );

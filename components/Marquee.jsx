@@ -38,20 +38,34 @@ export default function Marquee() {
   useEffect(() => {
     const el = ref.current;
     if (!el || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    let last = window.scrollY, vel = 0, raf = 0, active = true;
+    let last = window.scrollY, vel = 0, raf = 0;
     const tick = () => {
       const y = window.scrollY;
       vel = vel * 0.88 + (y - last) * 0.12;
       last = y;
       const r = el.getBoundingClientRect();
-      if (r.bottom > -200 && r.top < window.innerHeight + 200) {
-        el.style.setProperty("--sx", ((r.top - window.innerHeight / 2) * 0.10).toFixed(1));
-        el.style.setProperty("--v", Math.max(-4, Math.min(4, vel)).toFixed(2));
-      }
-      if (active) raf = requestAnimationFrame(tick);
+      el.style.setProperty("--sx", ((r.top - window.innerHeight / 2) * 0.10).toFixed(1));
+      el.style.setProperty("--v", Math.max(-4, Math.min(4, vel)).toFixed(2));
+      raf = requestAnimationFrame(tick);
     };
-    raf = requestAnimationFrame(tick);
-    return () => { active = false; cancelAnimationFrame(raf); };
+    // run the loop only while the ticker is near the viewport
+    const io = new IntersectionObserver(
+      ([e]) => {
+        if (e.isIntersecting && !raf) {
+          last = window.scrollY;
+          raf = requestAnimationFrame(tick);
+        } else if (!e.isIntersecting && raf) {
+          cancelAnimationFrame(raf);
+          raf = 0;
+        }
+      },
+      { rootMargin: "200px 0px 200px 0px" }
+    );
+    io.observe(el);
+    return () => {
+      io.disconnect();
+      if (raf) cancelAnimationFrame(raf);
+    };
   }, []);
 
   return (

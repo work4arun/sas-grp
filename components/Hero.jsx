@@ -49,6 +49,7 @@ export default function Hero() {
     vis.querySelectorAll(".tw-par").forEach((el) => (byLevel[Number(el.dataset.level)] = el));
 
     let t = 0;
+    let inView = true;
     let raf = 0;
     let last = 0;
     let targetMx = 0, targetMy = 0;
@@ -91,7 +92,7 @@ export default function Hero() {
           byLevel[lv].style.transform = `translate(${x.toFixed(2)}px, ${y.toFixed(2)}px)`;
         }
       }
-      raf = requestAnimationFrame(step);
+      raf = inView ? requestAnimationFrame(step) : 0;
     };
 
     const run = () => {
@@ -116,8 +117,14 @@ export default function Hero() {
 
     const onScroll = () => {
       sy = Math.max(0, Math.min(1, window.scrollY / ((sec.offsetHeight || 1) * 0.9)));
-      run();
+      if (inView) run();
     };
+
+    const io = new IntersectionObserver(([e]) => {
+      inView = e.isIntersecting;
+      if (inView) run();
+    });
+    io.observe(sec);
 
     sec.addEventListener("pointermove", onMove);
     sec.addEventListener("pointerleave", onLeave);
@@ -129,6 +136,7 @@ export default function Hero() {
       sec.removeEventListener("pointermove", onMove);
       sec.removeEventListener("pointerleave", onLeave);
       window.removeEventListener("scroll", onScroll);
+      io.disconnect();
       if (raf) cancelAnimationFrame(raf);
     };
   }, []);

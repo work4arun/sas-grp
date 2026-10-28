@@ -5,9 +5,10 @@ import Reveal, { Lines, Words } from "@/components/Reveal";
 import { PLACEMENT } from "@/lib/site";
 
 export const metadata = {
+  alternates: { canonical: "/placements" },
   title: "Placements | Sasurie Group of Institutions",
   description:
-    "Placements at Sasurie Group of Institutions: 150+ recruiting companies, 1500+ students placed, 93.12% placement rate, ₹48 LPA highest package, aptitude & soft-skills training.",
+    "Placements at Sasurie Group of Institutions: 150+ recruiting companies, 1500+ students placed, 93.12% placement rate, aptitude & soft-skills training.",
 };
 
 const STATS_CARDS = PLACEMENT.stats.map((s, i) => ({

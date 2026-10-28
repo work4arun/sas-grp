@@ -1,3 +1,4 @@
+import Link from "next/link";
 import PageShell from "@/components/PageShell";
 import FactCards from "@/components/FactCards";
 import PointList from "@/components/PointList";
@@ -5,6 +6,7 @@ import Reveal, { Lines, Words } from "@/components/Reveal";
 import { ABOUT, GOVERNING_COUNCIL } from "@/lib/site";
 
 export const metadata = {
+  alternates: { canonical: "/about" },
   title: "About | Sasurie Group of Institutions",
   description:
     "Sasurie Group of Institutions, Vijayamangalam & Coimbatore — founded in 2001 by the Ponmudi Muthusamy Gounder Trust. Vision, mission, leadership, campuses and governing council.",
@@ -30,9 +32,9 @@ export default function AboutPage() {
 
         <div className="container" style={{ marginTop: "clamp(48px, 7vw, 96px)" }}>
           <div className="cta-row">
-            <a className="btn btn-primary" href="/departments">See the departments</a>
-            <a className="btn btn-ghost" href="/disclosures">Disclosures and documents</a>
-            <a className="btn btn-ghost" href="/contact">Contact us</a>
+            <Link className="btn btn-primary" href="/departments">See the departments</Link>
+            <Link className="btn btn-ghost" href="/disclosures">Disclosures and documents</Link>
+            <Link className="btn btn-ghost" href="/contact">Contact us</Link>
           </div>
         </div>
       </section>
@@ -92,7 +94,7 @@ export default function AboutPage() {
             <Reveal>
               <p className="fine" style={{ maxWidth: "62ch" }}>
                 The Academic Council, Standing Committee, Finance Committee, Board of Studies and Result Passing Board are described on the{" "}
-                <a className="to-top" href="/disclosures">Disclosures</a> page.
+                <Link className="to-top" href="/disclosures">Disclosures</Link> page.
               </p>
             </Reveal>
           </div>

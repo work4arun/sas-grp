@@ -89,15 +89,15 @@ export const BLUEPRINT_PANELS = [
     title: "Enterprise",
     lead: "Lead, Venture & Achieve",
     summary:
-      "Launchpad for top-tier careers, startup venture incubation, and high-package placements up to ₹48 LPA.",
+      "Launchpad for top-tier careers, startup venture incubation, and top-tier placement support.",
     points: [
-      "Placements up to ₹48 LPA",
+      "Placement Training & Career Support",
       "On-Campus Incubation & Grants",
       "Executive & Interview Coaching",
       "12,000+ Global Alumni Network",
     ],
     stats: [
-      { value: "₹48 LPA", label: "Highest Package" },
+      { value: "150+", label: "Recruiters" },
       { value: "12k+", label: "Global Alumni" },
       { value: "92%", label: "Placement Rate" },
     ],
@@ -108,16 +108,21 @@ export const BLUEPRINT_PANELS = [
 
 const colorOf = Object.fromEntries(LAYERS.map((l) => [l.key, l.fill]));
 const darkColorOf = Object.fromEntries(LAYERS.map((l) => [l.key, l.fillDark]));
+const inkOf = Object.fromEntries(LAYERS.map((l) => [l.key, l.ink]));
 
 export default function Story({ isStandalone = false }) {
   const [active, setActive] = useState(0);
   const [hoveredLevel, setHoveredLevel] = useState(null);
 
   const [isPaused, setIsPaused] = useState(false);
+  const [userPaused, setUserPaused] = useState(false);
+  const [playVideo, setPlayVideo] = useState(false);
+  const sectionRef = useRef(null);
 
   const current = BLUEPRINT_PANELS[active] || BLUEPRINT_PANELS[0];
   const activeColor = colorOf[current.key];
   const activeDarkColor = darkColorOf[current.key];
+  const activeInk = inkOf[current.key];
 
   const goTo = useCallback((idx) => {
     if (idx >= 0 && idx < BLUEPRINT_PANELS.length) {
@@ -153,20 +158,27 @@ export default function Story({ isStandalone = false }) {
     el.style.setProperty("--my", "0");
   }, []);
 
+  // The ambient video is optional: skip it for reduced motion and Save-Data, so those visitors never download it.
+  useEffect(() => {
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const saveData = navigator.connection?.saveData;
+    if (!reduce && !saveData) setPlayVideo(true);
+  }, []);
+
   // Ensure background video plays reliably across all browsers (WebKit/Safari autoplay policy)
   useEffect(() => {
-    if (videoRef.current) {
+    if (playVideo && videoRef.current) {
       videoRef.current.defaultMuted = true;
       videoRef.current.muted = true;
       videoRef.current.play?.().catch(() => {
         // Autoplay may be restricted by strict battery saver mode
       });
     }
-  }, []);
+  }, [playVideo]);
 
   // Mild automatic loop through Foundation, Competency, Exposure, Enterprise
   useEffect(() => {
-    if (isPaused) return;
+    if (isPaused || userPaused) return;
     if (typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     const timer = setInterval(() => {
@@ -174,7 +186,7 @@ export default function Story({ isStandalone = false }) {
     }, 5500);
 
     return () => clearInterval(timer);
-  }, [isPaused, active]);
+  }, [isPaused, userPaused, active]);
 
   // Sync with URL hash if provided
   useEffect(() => {
@@ -191,7 +203,11 @@ export default function Story({ isStandalone = false }) {
   // Keyboard navigation
   useEffect(() => {
     const onKeyDown = (e) => {
-      if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA") return;
+      if (e.metaKey || e.ctrlKey || e.altKey || e.shiftKey) return;
+      const tag = e.target.tagName;
+      if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT" || e.target.isContentEditable) return;
+      const box = sectionRef.current?.getBoundingClientRect();
+      if (!box || box.bottom < 0 || box.top > window.innerHeight) return;
       if (e.key === "ArrowRight") nextSlide();
       else if (e.key === "ArrowLeft") prevSlide();
       else if (e.key >= "1" && e.key <= "4") goTo(Number(e.key) - 1);
@@ -209,6 +225,7 @@ export default function Story({ isStandalone = false }) {
 
   return (
     <section
+      ref={sectionRef}
       className={`story section${isStandalone ? " is-standalone" : ""}`}
       id="layers"
       aria-label="The Sasurie Blueprint: Four Layers of Leadership"
@@ -220,17 +237,20 @@ export default function Story({ isStandalone = false }) {
 
       {/* Cinematic Ambient Background Video */}
       <div className="story-video-bg" aria-hidden="true">
-        <video
-          ref={videoRef}
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="auto"
-          className="story-video-media"
-        >
-          <source src="/sasori.mp4" type="video/mp4" />
-        </video>
+        {playVideo && (
+          <video
+            ref={videoRef}
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="metadata"
+            poster="/sasori-poster.webp"
+            className="story-video-media"
+          >
+            <source src="/sasori-lite.mp4" type="video/mp4" />
+          </video>
+        )}
         <div className="story-video-overlay" />
       </div>
 
@@ -302,7 +322,7 @@ export default function Story({ isStandalone = false }) {
               <div className="tower-stats-row">
                 {current.stats.map((st) => (
                   <div key={st.label} className="tower-stat-item">
-                    <strong style={{ color: activeColor }}>{st.value}</strong>
+                    <strong style={{ color: activeInk }}>{st.value}</strong>
                     <span>{st.label}</span>
                   </div>
                 ))}
@@ -326,7 +346,7 @@ export default function Story({ isStandalone = false }) {
                       type="button"
                       role="tab"
                       id={`tab-${p.key}`}
-                      aria-controls={`panel-${p.key}`}
+                      aria-controls={isActive ? `panel-${p.key}` : undefined}
                       aria-selected={isActive}
                       className={`story-pill-btn${isActive ? " is-active" : ""}`}
                       onClick={() => goTo(i)}
@@ -348,7 +368,7 @@ export default function Story({ isStandalone = false }) {
                 className="story-panel-body"
               >
                 <div className="panel-kicker-row">
-                  <span className="panel-tag" style={{ color: activeColor }}>
+                  <span className="panel-tag" style={{ color: activeInk }}>
                     {current.tagline}
                   </span>
                   <span className="panel-years-tag">{current.years}</span>
@@ -383,6 +403,9 @@ export default function Story({ isStandalone = false }) {
                       </Link>
                     </Magnetic>
                   )}
+                  <button type="button" className="story-pause" onClick={() => setUserPaused((v) => !v)}>
+                    {userPaused ? "Resume auto-play" : "Pause auto-play"}
+                  </button>
                   <span className="story-shortcut-hint">
                     Use <kbd>←</kbd> <kbd>→</kbd> or <kbd>1-4</kbd> keys
                   </span>

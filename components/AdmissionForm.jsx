@@ -1,31 +1,10 @@
 "use client";
 
 import { useState } from "react";
+import { ALL_GROUP_PROGRAMMES } from "@/lib/programmes";
 
-// Every programme across the Sasurie Group of Institutions (sasurie.com)
-export const PROGRAMME_OPTIONS = [
-  "B.E. Computer Science and Engineering",
-  "B.Tech. Artificial Intelligence and Data Science",
-  "B.E. CSE (Cyber Security)",
-  "B.Tech. Information Technology",
-  "B.E. Electronics and Communication Engineering",
-  "B.E. Electrical and Electronics Engineering",
-  "B.E. Mechanical Engineering",
-  "B.E. Civil Engineering",
-  "B.Sc. Computer Science (AI & DS) with IBM",
-  "B.Sc. Artificial Intelligence & Machine Learning",
-  "B.Sc. Costume Design and Fashion (CDF)",
-  "B.Sc. Visual Communication (VisCom)",
-  "BCA (Data Science & AI / Cloud Computing)",
-  "B.Com (Finance / Accounting / CA / PA / Fintech)",
-  "BBA (Aviation & AI / Logistics & Supply Chain)",
-  "B.Pharm (Bachelor of Pharmacy)",
-  "B.Sc. Nursing",
-  "B.Ed. (Bachelor of Education)",
-  "M.E. Computer Science and Engineering",
-  "MBA (Digital Marketing / Logistics / Aviation / Finance / HR)",
-  "M.Sc. Computer Science / Mathematics",
-];
+// Every programme in the catalogue, so the form can never drift from the programmes finder.
+export const PROGRAMME_OPTIONS = ALL_GROUP_PROGRAMMES.map((p) => (p.name.startsWith(p.degree) ? p.name : `${p.degree} ${p.name}`));
 
 // Where a request goes.
 const ENDPOINT = process.env.NEXT_PUBLIC_ADMISSION_ENDPOINT || "";
@@ -119,8 +98,8 @@ export default function AdmissionForm() {
         <i className="spinner" aria-hidden="true" />
       </button>
       <p className="fine">
-        We use these details only to contact you about admissions. You can also call 94425 93828
-        or 94888 93333, or apply online at edsolutions360.com/apply/sasurie.
+        By submitting, you agree that the admissions team may contact you by phone or WhatsApp about admissions. We use these
+        details only for that. You can also call 94425 93828 or 94888 93333, or apply online at admissions.sasurie.com.
       </p>
     </form>
   );

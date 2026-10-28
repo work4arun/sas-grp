@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import PageShell from "@/components/PageShell";
 import FactCards from "@/components/FactCards";
@@ -92,8 +93,8 @@ export default async function DepartmentPage({ params }) {
             </Reveal>
           ))}
           <div className="cta-row">
-            <a className="btn btn-primary" href="/admissions">Admissions and eligibility</a>
-            <a className="btn btn-ghost" href="/departments">All departments</a>
+            <Link className="btn btn-primary" href="/admissions">Admissions and eligibility</Link>
+            <Link className="btn btn-ghost" href="/departments">All departments</Link>
             <a className="btn btn-ghost" href={`mailto:${d.email}`}>Write to the department</a>
           </div>
         </div>

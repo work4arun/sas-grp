@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 /**
  * The card grid used on the seeded inner pages. Same markup, classes and CSS
@@ -44,11 +45,17 @@ export default function FactCards({ items, minWidth = 240 }) {
           <p>{f.text}</p>
           {f.links && (
             <p style={{ marginTop: 8, display: "grid", gap: 6 }}>
-              {f.links.map((l) => (
-                <a key={l.href} className="to-top" href={l.href} target={l.href.startsWith("http") ? "_blank" : undefined} rel={l.href.startsWith("http") ? "noreferrer" : undefined}>
-                  {l.label}
-                </a>
-              ))}
+              {f.links.map((l) =>
+                l.href.startsWith("/") ? (
+                  <Link key={l.href} className="to-top" href={l.href}>
+                    {l.label}
+                  </Link>
+                ) : (
+                  <a key={l.href} className="to-top" href={l.href} target={l.href.startsWith("http") ? "_blank" : undefined} rel={l.href.startsWith("http") ? "noreferrer" : undefined}>
+                    {l.label}
+                  </a>
+                )
+              )}
             </p>
           )}
         </div>

@@ -83,7 +83,7 @@ export default function Tower({
     <svg
       className="tower"
       viewBox="-170 -6 340 340"
-      role="img"
+      role={onClick ? "group" : "img"}
       aria-label={label || "Four stacked layers: foundation, competency, exposure and enterprise"}
     >
       <TowerLayers

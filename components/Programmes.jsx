@@ -208,7 +208,7 @@ export default function Programmes({
             {STATS.map((s) => (
               <div key={s.label}>
                 <dt>{s.label}</dt>
-                <dd>{s.isText ? s.n : String(s.n).padStart(2, "0")}</dd>
+                <dd className={s.isText ? "is-text" : undefined}>{s.isText ? s.n : String(s.n).padStart(2, "0")}</dd>
               </div>
             ))}
           </dl>
@@ -376,8 +376,11 @@ export default function Programmes({
                             </svg>
                             {p.campusLabel}
                           </span>
-                          <span className="pf-go" aria-hidden="true">
-                            <Arrow />
+                          <span className="pf-go-group">
+                            {!p.slug && !p.href && <span className="pf-enquire">Enquire</span>}
+                            <span className="pf-go" aria-hidden="true">
+                              <Arrow />
+                            </span>
                           </span>
                         </div>
                       </article>
@@ -415,7 +418,7 @@ export default function Programmes({
             </>
           ) : (
             <div className="pf-empty">
-              <h4>No courses found</h4>
+              <h4>No programmes found</h4>
               <p>No programmes match your current search or filter combination.</p>
               <button type="button" className="pf-empty-reset" onClick={handleResetFilters}>
                 Show all {ITEMS.length} programmes
