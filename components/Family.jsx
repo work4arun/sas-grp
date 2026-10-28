@@ -34,7 +34,7 @@ export default function Family() {
                 <Tilt max={10} className="logo-tilt">
                   <Image src={c.src} alt={c.name} width={1100} height={268} sizes="(max-width: 700px) 80vw, 360px" />
                 </Tilt>
-                <span className="here" style={{ marginTop: 8 }}>{c.campus}</span>
+                <span className="here">{c.campus}</span>
               </a>
             </Reveal>
           ))}

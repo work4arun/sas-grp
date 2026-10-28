@@ -3,7 +3,7 @@ import Link from "next/link";
 import Reveal, { Lines } from "./Reveal";
 import { EXPLORE_TABS } from "@/lib/site";
 
-// "Explore SAS: Life, facilities and records": the secondary pages as a photographic mosaic, placed straight after the
+// "Explore SAS: Campus Life": the secondary pages as a photographic mosaic, placed straight after the
 // programmes finder. Tile content is EXPLORE_TABS in lib/site.js, so the header "More" menu and this section stay in step.
 
 // Life leads (the large tile); the rest follow the order in EXPLORE_TABS. Copy, images and links come from lib/site.js.
@@ -23,7 +23,7 @@ export default function Explore() {
         <div className="ex-head">
           <div>
             <p className="eyebrow">Explore SAS</p>
-            <Lines lines={["Life, facilities", "and records."]} />
+            <Lines lines={["Campus Life"]} />
           </div>
           <p className="ex-note">Beyond the programmes: how the campus lives, what it offers and what it publishes.</p>
         </div>

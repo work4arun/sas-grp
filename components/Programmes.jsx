@@ -75,15 +75,14 @@ const FOUNDATION = PROGRAMMES.find((p) => p.group === "foundation");
 const FOUNDATION_DEPT = DEPARTMENT_BY_PROGRAMME[FOUNDATION?.short];
 
 const STATS = [
-  { n: ITEMS.length, label: "Programmes offered" },
-  { n: "92%", label: "Graduation rate", isText: true },
-  { n: "2,500+", label: "Students enrolled", isText: true },
-  { n: "12K+", label: "Top graduates", isText: true },
-  { n: "Autonomous", label: "Conferred by UGC & AU", isText: true },
+  { n: "37+", label: "Programmes offered" },
+  { n: "5", label: "Specialised faculties" },
+  { n: "2", label: "Campuses in VJM & CBE" },
+  { n: "Autonomous", label: "UGC & AU Conferred", isText: true },
 ];
 
 const Arrow = () => (
-  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+  <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
     <path d="M5 12h14M13 6l6 6-6 6" />
   </svg>
 );
@@ -173,7 +172,7 @@ export default function Programmes({
 
   return (
     <section className="pf section" id="programmes">
-      {/* Background Silver Ripples (matching the hero) */}
+      {/* Background Subtle Ripple Lines */}
       <div className="pf-ripples" aria-hidden="true">
         <svg viewBox="-400 -60 800 280" preserveAspectRatio="none">
           {[1, 2, 3, 4, 5, 6].map((k) => {
@@ -189,10 +188,11 @@ export default function Programmes({
           })}
         </svg>
       </div>
+
       <div className="container">
-        {/* Simple & Clean Header */}
+        {/* Simple & Dignified Section Header */}
         <div className="pf-head">
-          <div className="pf-title">
+          <div className="pf-title-box">
             <p className="pf-eyebrow">
               <Chevrons />
               {headingEyebrow}
@@ -233,16 +233,14 @@ export default function Programmes({
                   <span className="pf-domain-tab-icon" aria-hidden="true">
                     {ICONS[tab.key]}
                   </span>
-                  <div className="pf-domain-tab-info">
-                    <span className="pf-domain-tab-name">{tab.short}</span>
-                    <span className="pf-domain-tab-count">{count} {count === 1 ? "course" : "courses"}</span>
-                  </div>
+                  <span className="pf-domain-tab-name">{tab.short}</span>
+                  <span className="pf-domain-tab-count">{count}</span>
                 </button>
               );
             })}
           </div>
 
-          {/* Simple, Compact Filter Bar */}
+          {/* Simple, Professional Filter Toolbar */}
           <div className="pf-toolbar">
             {/* Search Input */}
             <div className="pf-search-wrap">
@@ -255,7 +253,7 @@ export default function Programmes({
               <input
                 type="text"
                 className="pf-search-input"
-                placeholder="Search courses (e.g. AI, Cyber, FinTech, MBA, Nursing)..."
+                placeholder="Search programmes (e.g. AI, Cyber, FinTech, MBA, Nursing)..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 aria-label="Search programmes"
@@ -267,32 +265,36 @@ export default function Programmes({
               )}
             </div>
 
-            {/* Quick Filters */}
+            {/* Quick Segmented Filters */}
             <div className="pf-filter-group">
               <div className="pf-campus-toggles" role="group" aria-label="Campus filter">
-                <span className="pf-campus-label">Campus:</span>
-                <button type="button" className="pf-campus-btn" aria-pressed={campus === "all"} onClick={() => setCampus("all")}>
-                  All
-                </button>
-                <button type="button" className="pf-campus-btn" aria-pressed={campus === "vjm"} onClick={() => setCampus("vjm")}>
-                  Vijayamangalam
-                </button>
-                <button type="button" className="pf-campus-btn" aria-pressed={campus === "cbe"} onClick={() => setCampus("cbe")}>
-                  Coimbatore
-                </button>
+                <span className="pf-filter-label">Campus:</span>
+                <div className="pf-segmented">
+                  <button type="button" className="pf-seg-btn" aria-pressed={campus === "all"} onClick={() => setCampus("all")}>
+                    All
+                  </button>
+                  <button type="button" className="pf-seg-btn" aria-pressed={campus === "vjm"} onClick={() => setCampus("vjm")}>
+                    Vijayamangalam
+                  </button>
+                  <button type="button" className="pf-seg-btn" aria-pressed={campus === "cbe"} onClick={() => setCampus("cbe")}>
+                    Coimbatore
+                  </button>
+                </div>
               </div>
 
               <div className="pf-campus-toggles" role="group" aria-label="Level filter">
-                <span className="pf-campus-label">Level:</span>
-                <button type="button" className="pf-campus-btn" aria-pressed={level === "all"} onClick={() => setLevel("all")}>
-                  All
-                </button>
-                <button type="button" className="pf-campus-btn" aria-pressed={level === "ug"} onClick={() => setLevel("ug")}>
-                  UG
-                </button>
-                <button type="button" className="pf-campus-btn" aria-pressed={level === "pg"} onClick={() => setLevel("pg")}>
-                  PG
-                </button>
+                <span className="pf-filter-label">Level:</span>
+                <div className="pf-segmented">
+                  <button type="button" className="pf-seg-btn" aria-pressed={level === "all"} onClick={() => setLevel("all")}>
+                    All
+                  </button>
+                  <button type="button" className="pf-seg-btn" aria-pressed={level === "ug"} onClick={() => setLevel("ug")}>
+                    UG
+                  </button>
+                  <button type="button" className="pf-seg-btn" aria-pressed={level === "pg"} onClick={() => setLevel("pg")}>
+                    PG
+                  </button>
+                </div>
               </div>
 
               {hasActiveFilters && (
@@ -303,19 +305,30 @@ export default function Programmes({
             </div>
           </div>
 
-          {/* Filter Status / Featured Note Bar */}
-          {isDefaultView ? (
-            <div className="pf-status-bar">
-              <div className="pf-status-info">
-                <span className="fact-beacon" aria-hidden="true" style={{ "--c": "var(--red)", "--rgb": "224, 31, 38" }} />
-                <span>
-                  {showAll ? (
+          {/* Simple, Clean Status & Context Strip */}
+          <div className="pf-status-bar">
+            <div className="pf-status-info">
+              <span className="pf-status-dot" style={{ background: activeTab.color }} aria-hidden="true" />
+              <span>
+                {isDefaultView ? (
+                  showAll ? (
                     <>Showing <b>all {displayedItems.length} programmes</b> across both campuses</>
                   ) : (
-                    <>Showing <b>6 flagship programmes</b> · Select a stream above or expand below</>
-                  )}
-                </span>
-              </div>
+                    <>Showing <b>6 flagship programmes</b> · Select any stream above or explore full catalogue</>
+                  )
+                ) : (
+                  <>
+                    Showing <b>{displayedItems.length} {displayedItems.length === 1 ? "programme" : "programmes"}</b>
+                    {domain !== "all" && <> in <b>{activeTab.short}</b></>}
+                    {campus !== "all" && <> at <b>{campus === "vjm" ? "Vijayamangalam" : "Coimbatore"}</b></>}
+                    {level !== "all" && <> (<b>{level.toUpperCase()}</b>)</>}
+                    {search.trim() && <> matching &ldquo;<b>{search.trim()}</b>&rdquo;</>}
+                  </>
+                )}
+              </span>
+            </div>
+
+            {isDefaultView ? (
               <button
                 type="button"
                 className="pf-toggle-all-link"
@@ -323,44 +336,31 @@ export default function Programmes({
               >
                 {showAll ? "Show featured only (6)" : `View all ${ITEMS.length} programmes →`}
               </button>
-            </div>
-          ) : (
-            <div className="pf-status-bar">
-              <div className="pf-status-info">
-                <span className="fact-beacon" aria-hidden="true" style={{ "--c": activeTab.color, "--rgb": activeTab.rgb }} />
-                <span>
-                  Showing <b>{displayedItems.length} programmes</b>
-                  {domain !== "all" && <> in <b>{activeTab.short}</b></>}
-                  {campus !== "all" && <> at <b>{campus === "vjm" ? "Vijayamangalam" : "Coimbatore"}</b></>}
-                  {level !== "all" && <> (<b>{level.toUpperCase()}</b>)</>}
-                  {search.trim() && <> matching &ldquo;<b>{search.trim()}</b>&rdquo;</>}
-                </span>
-              </div>
+            ) : (
               <button type="button" className="pf-results-clear" onClick={handleResetFilters}>
                 Show all streams ✕
               </button>
-            </div>
-          )}
+            )}
+          </div>
 
-          {/* Compact Course Grid */}
+          {/* Substantive, Highly Professional Course Grid */}
           {displayedItems.length > 0 ? (
             <>
-              <ul className="pf-grid pf-grid-compact">
+              <ul className="pf-grid">
                 {displayedItems.map((p, i) => {
                   const targetHref = p.slug ? `/departments/${p.slug}` : (p.href || "/admissions");
                   return (
                     <li key={p.slug || p.short || p.name} className="pf-item" style={{ "--c": p.color, "--rgb": p.rgb, "--i": i }}>
-                      <article className="pf-card pf-card-compact">
-                        {/* Top Row: Degree & Duration */}
+                      <article className="pf-card">
+                        {/* Top Row: Degree Badge & Duration */}
                         <div className="pf-card-top">
                           <span className="pf-degree">
-                            <span className="fact-beacon" aria-hidden="true" style={{ "--c": p.color, "--rgb": p.rgb }} />
                             {p.degree}
                           </span>
                           <span className="pf-goal-tag">{p.yearsLabel}</span>
                         </div>
 
-                        {/* Course Name */}
+                        {/* Programme Name */}
                         <h4 className="pf-name">
                           <Link href={targetHref} className="pf-link">
                             {p.name}
@@ -386,16 +386,9 @@ export default function Programmes({
                 })}
               </ul>
 
-              {/* Expand / Collapse Action for Default State */}
+              {/* Bottom Quick-Action Toggle for Default State */}
               {isDefaultView && (
                 <div className="pf-expand-row">
-                  <p className="pf-expand-prompt">
-                    {showAll ? (
-                      <>Viewing the complete catalogue of <b>{ITEMS.length} programmes</b> across Engineering, Arts &amp; Science, Management, Healthcare, and Postgraduate studies.</>
-                    ) : (
-                      <>Looking for a specific degree or stream? Select a faculty above or view the full catalogue of <b>{ITEMS.length} programmes</b>.</>
-                    )}
-                  </p>
                   <button
                     type="button"
                     className="pf-expand-btn"
@@ -410,7 +403,7 @@ export default function Programmes({
                       </>
                     ) : (
                       <>
-                        View all {ITEMS.length} programmes
+                        View all {ITEMS.length} academic programmes
                         <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                           <path d="M6 9l6 6 6-6" />
                         </svg>
@@ -438,8 +431,8 @@ export default function Programmes({
               <Chevrons />
               First Year Foundation
             </span>
-            <b>{FOUNDATION?.name || "Science and Humanities"}</b>
-            <span className="pf-found-text">{FOUNDATION?.line || "The common first year foundation for engineering branches across our group."}</span>
+            <b>{FOUNDATION?.name || "Department of Science and Humanities"}</b>
+            <span className="pf-found-text">{FOUNDATION?.line || "The common first-year academic foundation for all engineering branches across our group."}</span>
             <span className="pf-found-go" aria-hidden="true">
               <Arrow />
             </span>

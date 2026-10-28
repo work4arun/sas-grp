@@ -50,6 +50,16 @@ export function TowerLayers({
               <g className="tw-float">
                 <path d={l.left} fill={l.fill} />
                 <path d={l.right} fill={l.fillDark} />
+                <line
+                  x1="0"
+                  y1={l.apex}
+                  x2="0"
+                  y2={l.bApex}
+                  stroke="rgba(255, 255, 255, 0.45)"
+                  strokeWidth="1.2"
+                  strokeLinecap="round"
+                  pointerEvents="none"
+                />
               </g>
             </g>
           </g>
@@ -60,7 +70,15 @@ export function TowerLayers({
 }
 
 /** Stand-alone tower used beside the story or within the presentation stage. */
-export default function Tower({ opacities, label, current, onClick, onEnter, onLeave }) {
+export default function Tower({
+  opacities,
+  label,
+  current,
+  onClick,
+  onEnter,
+  onLeave,
+  animate = true,
+}) {
   return (
     <svg
       className="tower"
@@ -69,6 +87,7 @@ export default function Tower({ opacities, label, current, onClick, onEnter, onL
       aria-label={label || "Four stacked layers: foundation, competency, exposure and enterprise"}
     >
       <TowerLayers
+        animate={animate}
         opacities={opacities}
         current={current}
         onClick={onClick}

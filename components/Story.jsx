@@ -134,6 +134,24 @@ export default function Story({ isStandalone = false }) {
   }, []);
 
   const videoRef = useRef(null);
+  const towerCardRef = useRef(null);
+
+  const handleTowerMouseMove = useCallback((e) => {
+    const el = towerCardRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / rect.width - 0.5) * 2;
+    const y = ((e.clientY - rect.top) / rect.height - 0.5) * 2;
+    el.style.setProperty("--mx", x.toFixed(2));
+    el.style.setProperty("--my", y.toFixed(2));
+  }, []);
+
+  const handleTowerMouseLeave = useCallback(() => {
+    const el = towerCardRef.current;
+    if (!el) return;
+    el.style.setProperty("--mx", "0");
+    el.style.setProperty("--my", "0");
+  }, []);
 
   // Ensure background video plays reliably across all browsers (WebKit/Safari autoplay policy)
   useEffect(() => {
@@ -182,12 +200,11 @@ export default function Story({ isStandalone = false }) {
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [nextSlide, prevSlide, goTo]);
 
-  // Tower opacities highlighting active or hovered layer
+  // Tower opacities: keep all chevrons rich and vivid, with full spotlight on active
   const effectiveFocus = hoveredLevel !== null ? hoveredLevel : active;
   const opacities = [0, 1, 2, 3].map((lv) => {
     if (lv === effectiveFocus) return 1;
-    if (lv < effectiveFocus) return 0.65;
-    return 0.35;
+    return 0.85;
   });
 
   return (
@@ -255,7 +272,12 @@ export default function Story({ isStandalone = false }) {
         >
           {/* Left Column: 3D Chevron Tower on Transparent Canvas */}
           <div className="story-tower-side">
-            <div className="story-tower-card">
+            <div
+              className="story-tower-card"
+              ref={towerCardRef}
+              onMouseMove={handleTowerMouseMove}
+              onMouseLeave={handleTowerMouseLeave}
+            >
               <div className="tower-kicker">
                 <span className="kicker-dot" style={{ background: activeColor }} />
                 <span>Level {current.level} · {current.title} ({current.years})</span>
