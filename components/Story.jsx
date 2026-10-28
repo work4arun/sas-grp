@@ -274,7 +274,7 @@ export default function Story({ isStandalone = false }) {
           <Words
             className="lede"
             delay={0.2}
-            text="Look at the Sasurie mark and you will see four chevrons stacked into an arrow. That is how we teach: grounded in Foundation, forged in Competency, expanded by Exposure, and realized in Enterprise. Each layer sits on the one below, and none is skipped."
+            text="Look at the Sasurie mark: four chevrons, one rising arrow. It is how we teach. Foundation grounds our students, Competency forges them, Exposure expands them, and Enterprise realizes them, each layer standing on the last, with none skipped."
           />
         </div>
 
