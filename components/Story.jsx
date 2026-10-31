@@ -37,8 +37,8 @@ export const BLUEPRINT_PANELS = [
     level: 1,
     number: "02",
     years: "Years 2 & 3",
-    tagline: "Forged in Competency",
-    title: "Competency",
+    tagline: "Forged in Skills & Competencies",
+    title: "Skills & Competencies",
     lead: "Build Practical Depth",
     summary:
       "Turning concepts into working capability through lab immersion, prototype builds, and industry credentials.",
@@ -61,8 +61,8 @@ export const BLUEPRINT_PANELS = [
     level: 2,
     number: "03",
     years: "Years 3 & 4",
-    tagline: "Expanded by Exposure",
-    title: "Exposure",
+    tagline: "Expanded by Applied Capability",
+    title: "Applied Capability",
     lead: "Connect with Industry",
     summary:
       "Direct immersion in corporate ecosystems with 350+ active partners, masterclasses, and campus Centres of Excellence.",
@@ -85,8 +85,8 @@ export const BLUEPRINT_PANELS = [
     level: 3,
     number: "04",
     years: "Final Year & Beyond",
-    tagline: "Realized in Enterprise",
-    title: "Enterprise",
+    tagline: "Realized in Career Direction & Impact",
+    title: "Career Direction & Impact",
     lead: "Lead, Venture & Achieve",
     summary:
       "Launchpad for top-tier careers, startup venture incubation, and top-tier placement support.",
@@ -176,7 +176,7 @@ export default function Story({ isStandalone = false }) {
     }
   }, [playVideo]);
 
-  // Mild automatic loop through Foundation, Competency, Exposure, Enterprise
+  // Mild automatic loop through Foundation, Skills & Competencies, Applied Capability, Career Direction & Impact
   useEffect(() => {
     if (isPaused || userPaused) return;
     if (typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
@@ -274,7 +274,7 @@ export default function Story({ isStandalone = false }) {
           <Words
             className="lede"
             delay={0.2}
-            text="Look at the Sasurie mark: four chevrons, one rising arrow. It is how we teach. Foundation grounds our students, Competency forges them, Exposure expands them, and Enterprise realizes them, each layer standing on the last, with none skipped."
+            text="Look at the Sasurie mark: four chevrons, one rising arrow. It is how we teach. Foundation grounds our students, Skills & Competencies forge them, Applied Capability expands them, and Career Direction & Impact realizes them, each layer standing on the last, with none skipped."
           />
         </div>
 

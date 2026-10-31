@@ -84,7 +84,7 @@ export default function Tower({
       className="tower"
       viewBox="-170 -6 340 340"
       role={onClick ? "group" : "img"}
-      aria-label={label || "Four stacked layers: foundation, competency, exposure and enterprise"}
+      aria-label={label || "Four stacked layers: foundation, skills and competencies, applied capability, and career direction and impact"}
     >
       <TowerLayers
         animate={animate}

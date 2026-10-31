@@ -147,7 +147,7 @@ export default function Hero() {
     <section className={`hero ${heroBoldVar}`} id="top" ref={root}>
       <div className="container hero-grid">
         <div className="hero-copy">
-          <Lines as="h1" className="hero-title" waitForLoad lines={["Leaders are", "built in layers."]} />
+          <Lines as="h1" className="hero-title" waitForLoad lines={["Every Self.", "A Journey of Advancement.", "A Life of Significance."]} />
           <Words
             className="lede"
             waitForLoad
@@ -180,7 +180,7 @@ export default function Hero() {
             className="hero-svg"
             viewBox="-300 -300 600 640"
             role="img"
-            aria-label="Four stacked layers rising like an arrow: foundation, competency, exposure and enterprise"
+            aria-label="Four stacked layers rising like an arrow: foundation, skills and competencies, applied capability, and career direction and impact"
           >
             <defs>
               <clipPath id="ripple-clip">
@@ -263,7 +263,7 @@ export default function Hero() {
               onFocus={() => setFocus(1)}
               onBlur={() => setFocus(null)}
             >
-              Competency
+              Skills &amp; Competencies
             </a>
             , expanded by{" "}
             <a
@@ -274,7 +274,7 @@ export default function Hero() {
               onFocus={() => setFocus(2)}
               onBlur={() => setFocus(null)}
             >
-              Exposure
+              Applied Capability
             </a>
             , and realized in{" "}
             <a
@@ -285,7 +285,7 @@ export default function Hero() {
               onFocus={() => setFocus(3)}
               onBlur={() => setFocus(null)}
             >
-              Enterprise
+              Career Direction &amp; Impact
             </a>
             .”
           </p>
