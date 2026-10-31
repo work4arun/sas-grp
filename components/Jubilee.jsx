@@ -19,11 +19,20 @@ const CONFIG = {
   tagline: "25 years of creating futures",
   launchLabel: "Launch",
   launchHint: "Press to launch the new website",
-  towerTitle: ["Leaders", "are", "built", "in", "layers"],
-  finaleLead: "Welcome to the new",
-  finaleBrand: "SASURIE",
-  finaleSub: "Group of Institutions · Create Your Future",
-  landAfterMs: 6500, // time on the finale before landing on the home page
+  storyLine: "Self · Advancement · Success with Significance",
+  selfLabel: "Self",
+  selfLine: "No title. No profession. No achievement. Only identity, potential and a future waiting to be shaped.",
+  towerTitle: ["Every", "Self.", "A", "journey", "of", "Advancement."],
+  sigLabel: "Success with Significance",
+  sigLine: "Success is what we achieve for ourselves. Significance is the value we create for others.",
+  finaleLead: "From Self, through Advancement, to Success with Significance",
+  finaleSub: "SAS Group of Institutions · Create Your Future",
+  finaleChips: [
+    { k: "S", n: "Self", c: "#d5dbea" },
+    { k: "A", n: "Advancement", c: "#fdb913" },
+    { k: "S", n: "Success with Significance", c: "#d5dbea" },
+  ],
+  landAfterMs: 9500, // time on the finale before landing on the home page
 };
 
 const HOST = (() => {
@@ -35,8 +44,17 @@ const HOST = (() => {
 })();
 
 const COUNT_MS = 5600;
-const TOWER_MS = 6600;
-const NAMES = ["Foundation", "Competency", "Exposure", "Enterprise"]; // level 0 → 3
+const SELF_MS = 5200;
+const TOWER_MS = 7400;
+const SIG_MS = 5200;
+const MID_STAGES = ["count", "self", "tower", "sig"];
+// the four colours of the A, bottom (level 0) → top (level 3)
+const NAMES = [
+  { n: "Foundation", d: "Values, fundamentals, confidence" },
+  { n: "Skills & Competencies", d: "Knowledge becomes practical skill" },
+  { n: "Applied Capability", d: "Real projects and evidence" },
+  { n: "Career Direction & Impact", d: "Careers, enterprise, purpose" },
+];
 
 /* ============================ canvas engine ============================ */
 function createEngine(canvas) {
@@ -226,20 +244,20 @@ function Letters({ text }) {
   );
 }
 
-function TowerMark() {
+function TowerMark({ uid = "jSheen", label = "The four colours of the SAS A" }) {
   const { x, y, w, h } = TOWER_BOX;
   return (
-    <svg className={s.tower} viewBox={`${x} ${y} ${w} ${h}`} role="img" aria-label="The four layers of Sasurie">
+    <svg className={s.tower} viewBox={`${x} ${y} ${w} ${h}`} role="img" aria-label={label}>
       {LAYERS.slice().reverse().map((l, k) => (
         <g key={l.key} className={s.layer} style={{ "--k": k, "--c": l.fill }}>
           <path d={l.right} fill={l.fill} />
           <path d={l.left} fill={l.fill} />
-          <path d={l.right} fill="url(#jSheen)" />
-          <path d={l.left} fill="url(#jSheen)" />
+          <path d={l.right} fill={`url(#${uid})`} />
+          <path d={l.left} fill={`url(#${uid})`} />
         </g>
       ))}
       <defs>
-        <linearGradient id="jSheen" x1="0" y1="0" x2="1" y2="1">
+        <linearGradient id={uid} x1="0" y1="0" x2="1" y2="1">
           <stop offset="0" stopColor="#fff" stopOpacity=".38" />
           <stop offset=".5" stopColor="#fff" stopOpacity="0" />
           <stop offset="1" stopColor="#000" stopOpacity=".18" />
@@ -252,7 +270,7 @@ function TowerMark() {
 /* ================================ page ================================ */
 export default function Jubilee() {
   const router = useRouter();
-  const [stage, setStage] = useState("intro"); // intro → count → tower → finale
+  const [stage, setStage] = useState("intro"); // intro → count → self → tower → sig → finale
   const [prev, setPrev] = useState(null);
   const [open, setOpen] = useState(false); // curtains
   const [run, setRun] = useState(0);
@@ -287,15 +305,18 @@ export default function Jubilee() {
     setRun((n) => n + 1);
     setOpen(true);
     engine.current?.salvo(3);
-    later(() => go("count"), 500);
-    later(() => go("tower"), 500 + COUNT_MS);
-    later(() => { go("finale"); engine.current?.finale(); }, 500 + COUNT_MS + TOWER_MS);
-    later(land, 500 + COUNT_MS + TOWER_MS + CONFIG.landAfterMs);
+    let at = 500;
+    MID_STAGES.forEach((st, i) => {
+      later(() => go(st), at);
+      at += [COUNT_MS, SELF_MS, TOWER_MS, SIG_MS][i];
+    });
+    later(() => { go("finale"); engine.current?.finale(); }, at);
+    later(land, at + CONFIG.landAfterMs);
   }, [go, land, reduced, router]);
 
   const skip = useCallback(() => {
     const st = stageRef.current;
-    if (st === "count" || st === "tower") {
+    if (MID_STAGES.includes(st)) {
       clearTimers();
       go("finale"); engine.current?.finale();
       later(land, CONFIG.landAfterMs);
@@ -404,7 +425,18 @@ export default function Jubilee() {
         )}
       </section>
 
-      {/* ---------- four layers ---------- */}
+      {/* ---------- S : Self ---------- */}
+      <section className={s.scene} data-on={on("self")} aria-hidden={stage !== "self"}>
+        {show("self") && (
+          <div className={s.storyWrap} key={`s${run}`}>
+            <div className={s.bigS} aria-hidden="true"><Letters text="S" /></div>
+            <p className={s.sLabel}>{CONFIG.selfLabel}</p>
+            <p className={s.sLine}>{CONFIG.selfLine}</p>
+          </div>
+        )}
+      </section>
+
+      {/* ---------- A : Advancement (the four colours) ---------- */}
       <section className={s.scene} data-on={on("tower")} aria-hidden={stage !== "tower"}>
         {show("tower") && (
           <div className={s.towerWrap} key={`t${run}`}>
@@ -419,15 +451,29 @@ export default function Jubilee() {
                 <TowerMark />
               </div>
               <ol className={s.names}>
-                {NAMES.map((n, lvl) => ({ n, lvl })).reverse().map(({ n, lvl }) => (
+                {NAMES.map((it, lvl) => ({ ...it, lvl })).reverse().map(({ n, d, lvl }) => (
                   <li key={n} className={s.nameItem} style={{ "--k": lvl, "--c": LAYERS.find((l) => l.level === lvl).fill }}>
                     <span className={s.nameNo}>{String(lvl + 1).padStart(2, "0")}</span>
                     <span className={s.nameDot} />
-                    <span className={s.nameTxt}>{n}</span>
+                    <span className={s.nameCol}>
+                      <span className={s.nameTxt}>{n}</span>
+                      <span className={s.nameSub}>{d}</span>
+                    </span>
                   </li>
                 ))}
               </ol>
             </div>
+          </div>
+        )}
+      </section>
+
+      {/* ---------- S : Success with Significance ---------- */}
+      <section className={s.scene} data-on={on("sig")} aria-hidden={stage !== "sig"}>
+        {show("sig") && (
+          <div className={s.storyWrap} key={`g${run}`}>
+            <div className={s.bigS} aria-hidden="true"><Letters text="S" /></div>
+            <p className={s.sLabel}>{CONFIG.sigLabel}</p>
+            <p className={s.sLine}>{CONFIG.sigLine}</p>
           </div>
         )}
       </section>
@@ -443,18 +489,24 @@ export default function Jubilee() {
               <span className={s.live}><i /> Now live</span>
             </div>
             <p className={s.fLead}>{CONFIG.finaleLead}</p>
-            <h2 className={s.fBrand}><Letters text={CONFIG.finaleBrand} /></h2>
+            <h2 className={s.fBrand} aria-label="SAS">
+              <span className={s.fMark} aria-hidden="true">
+                <span style={{ "--base": "1.2s" }}><Letters text="S" /></span>
+                <span className={s.fA}><TowerMark uid="jSheenF" label="" /></span>
+                <span style={{ "--base": "3.3s" }}><Letters text="S" /></span>
+              </span>
+            </h2>
             <p className={s.fSub}>{CONFIG.finaleSub}</p>
             <div className={s.chips}>
-              {NAMES.map((n, lvl) => (
-                <span key={n} className={s.chip} style={{ "--k": lvl, "--c": LAYERS.find((l) => l.level === lvl).fill }}>{n}</span>
+              {CONFIG.finaleChips.map((c, i) => (
+                <span key={i} className={s.chip} style={{ "--k": i, "--c": c.c }}><b>{c.k}</b> {c.n}</span>
               ))}
             </div>
             <Link href="/" ref={enterRef} className={s.enter} onClick={() => clearTimers()}>
               <span>Enter the website</span>
               <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" /></svg>
             </Link>
-            <div className={s.landBar} aria-hidden="true"><i style={{ animationDuration: `${CONFIG.landAfterMs - 3200}ms`, animationDelay: "3.2s" }} /></div>
+            <div className={s.landBar} aria-hidden="true"><i style={{ animationDuration: `${CONFIG.landAfterMs - 5400}ms`, animationDelay: "5.4s" }} /></div>
           </div>
         )}
       </section>
@@ -471,6 +523,7 @@ export default function Jubilee() {
         <p className={s.iEyebrow}>{CONFIG.eyebrow}</p>
         <h1 className={s.iTitle}><Letters text={CONFIG.title.toUpperCase()} /></h1>
         <p className={s.iSub}>{CONFIG.since} — {CONFIG.now} · {CONFIG.tagline}</p>
+        <p className={s.iStory}>{CONFIG.storyLine}</p>
         <button ref={launchBtn} type="button" className={s.launch} onClick={launch} disabled={stage !== "intro"}>
           <span className={s.launchRing} aria-hidden="true" />
           <span className={s.launchRing} aria-hidden="true" style={{ "--d": "1.2s" }} />
@@ -486,7 +539,7 @@ export default function Jubilee() {
 
       {/* ---------- presenter controls ---------- */}
       <div className={s.controls} data-idle={idle ? "true" : "false"}>
-        {(stage === "count" || stage === "tower") && (
+        {MID_STAGES.includes(stage) && (
           <button type="button" onClick={skip} className={s.ctl} aria-label="Skip to finale">Skip →</button>
         )}
         <button type="button" onClick={toggleFs} className={s.ctl} aria-label="Toggle full screen (F)">⛶</button>

@@ -136,6 +136,14 @@
   letter-spacing: 0.06em;
   animation: rise 1s var(--ease) 1.2s both;
 }
+.iStory {
+  margin: 0;
+  font-size: clamp(0.75rem, 1.5vw, 1rem);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #fdb913;
+  animation: rise 1s var(--ease) 1.5s both;
+}
 @keyframes rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
 
 .launch {
@@ -343,6 +351,43 @@
   animation: rise 0.9s var(--ease) 4.3s forwards;
 }
 
+/* ------------------------------ S scenes (Self / Significance) ------------------------------ */
+.storyWrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(8px, 2vh, 18px);
+  max-width: 880px;
+  text-align: center;
+}
+.bigS {
+  font-size: clamp(7rem, 30vh, 17rem);
+  line-height: 0.95;
+  font-weight: 800;
+  --base: 0.1s;
+}
+.sLabel {
+  margin: 0;
+  font-size: clamp(1.1rem, 3.4vw, 2.4rem);
+  font-weight: 800;
+  letter-spacing: 0.32em;
+  padding-left: 0.32em;
+  text-transform: uppercase;
+  color: #fff;
+  text-shadow: 0 4px 30px rgba(120, 150, 255, 0.55);
+  opacity: 0;
+  animation: rise 0.9s var(--ease) 0.8s forwards;
+}
+.sLine {
+  margin: 0;
+  max-width: 34em;
+  font-size: clamp(0.95rem, 2.2vw, 1.5rem);
+  line-height: 1.5;
+  color: rgba(228, 233, 248, 0.88);
+  opacity: 0;
+  animation: rise 1s var(--ease) 1.5s forwards;
+}
+
 /* ------------------------------ tower ------------------------------ */
 .towerWrap {
   display: flex;
@@ -429,7 +474,9 @@
 @keyframes slideIn { to { opacity: 1; transform: none; } }
 .nameNo { font-size: 0.85rem; letter-spacing: 0.2em; color: rgba(222, 228, 245, 0.55); width: 2ch; font-variant-numeric: tabular-nums; }
 .nameDot { width: 14px; height: 14px; border-radius: 50%; background: var(--c); box-shadow: 0 0 18px var(--c); }
-.nameTxt { font-size: clamp(1.15rem, 2.8vw, 2rem); font-weight: 700; letter-spacing: 0.04em; }
+.nameCol { display: flex; flex-direction: column; gap: 2px; }
+.nameTxt { font-size: clamp(1.1rem, 2.6vw, 1.9rem); font-weight: 700; letter-spacing: 0.03em; }
+.nameSub { font-size: clamp(0.75rem, 1.3vw, 0.95rem); color: rgba(222, 228, 245, 0.68); letter-spacing: 0.03em; }
 
 /* ------------------------------ finale ------------------------------ */
 .finale {
@@ -500,8 +547,11 @@
 .fLead {
   margin: clamp(4px, 1.5vh, 14px) 0 0;
   font-size: clamp(0.8rem, 2vw, 1.25rem);
-  letter-spacing: 0.5em;
-  padding-left: 0.5em;
+  letter-spacing: 0.26em;
+  padding-left: 0.26em;
+  line-height: 1.6;
+  max-width: min(92vw, 46em);
+  text-wrap: balance;
   text-transform: uppercase;
   color: rgba(228, 233, 248, 0.85);
   opacity: 0;
@@ -509,19 +559,23 @@
 }
 .fBrand {
   margin: 0;
-  font-size: clamp(2.8rem, 15vw, 11.5rem);
+  font-size: clamp(3.4rem, min(26vw, 27vh), 13rem);
   line-height: 1;
   font-weight: 800;
   letter-spacing: 0.06em;
   --base: 1.2s;
 }
+.fMark { display: inline-flex; align-items: center; justify-content: center; gap: 0.04em; }
+.fA { display: inline-block; width: 0.82em; height: 0.82em; margin: 0 -0.02em; }
+.fA .layer { animation-delay: calc(1.9s + var(--k) * 0.35s), calc(4s + var(--k) * 0.3s); }
+.chip b { color: var(--c); margin-right: 4px; }
 .fSub {
   margin: 0;
   font-size: clamp(0.85rem, 1.9vw, 1.3rem);
   letter-spacing: 0.12em;
   color: rgba(228, 233, 248, 0.85);
   opacity: 0;
-  animation: rise 0.9s var(--ease) 2.2s forwards;
+  animation: rise 0.9s var(--ease) 4.2s forwards;
 }
 .chips { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
 .chip {
@@ -535,7 +589,7 @@
   box-shadow: 0 0 20px color-mix(in srgb, var(--c) 45%, transparent);
   opacity: 0;
   animation: rise 0.7s var(--ease) forwards;
-  animation-delay: calc(2.5s + var(--k) * 0.12s);
+  animation-delay: calc(4.5s + var(--k) * 0.15s);
 }
 .enter {
   position: relative;
@@ -554,7 +608,7 @@
   background: linear-gradient(135deg, #fff, #c9d0de);
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.45), 0 0 60px rgba(180, 200, 255, 0.4);
   opacity: 0;
-  animation: rise 0.8s var(--ease) 3s forwards;
+  animation: rise 0.8s var(--ease) 5.2s forwards;
   transition: transform 0.3s var(--ease);
 }
 .enter:hover, .enter:focus-visible { transform: translateY(-3px) scale(1.04); outline: none; box-shadow: 0 0 0 3px #fdb913, 0 10px 40px rgba(0, 0, 0, 0.45); }
@@ -566,10 +620,10 @@
   left: -80%;
   background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.95), transparent);
   transform: skewX(-20deg);
-  animation: sweep 2.8s ease-in-out 3.6s infinite;
+  animation: sweep 2.8s ease-in-out 5.8s infinite;
 }
 @keyframes sweep { 60%, 100% { left: 140%; } }
-.landBar { width: min(320px, 70vw); height: 3px; border-radius: 3px; background: rgba(255, 255, 255, 0.15); overflow: hidden; opacity: 0; animation: fadeIn 0.6s ease 3.2s forwards; }
+.landBar { width: min(320px, 70vw); height: 3px; border-radius: 3px; background: rgba(255, 255, 255, 0.15); overflow: hidden; opacity: 0; animation: fadeIn 0.6s ease 5.4s forwards; }
 .landBar i { display: block; height: 100%; width: 100%; background: linear-gradient(90deg, #94c93d, #fdb913, #e01f26); transform-origin: left; transform: scaleX(0); animation: grow linear 3.2s forwards; }
 @keyframes grow { to { transform: scaleX(1); } }
 
@@ -604,7 +658,7 @@
   .towerRow { flex-direction: column; }
   .towerBox { height: min(32vh, 260px); }
   .names { flex-direction: row; flex-wrap: wrap; justify-content: center; gap: 10px 18px; }
-  .nameNo, .nameDot { display: none; }
+  .nameNo, .nameDot, .nameSub { display: none; }
   .nameItem { gap: 0; }
   .nameTxt { padding: 4px 12px; border-radius: 999px; border: 1.5px solid var(--c); font-size: 0.95rem; }
 }
